@@ -19,6 +19,18 @@ license:
   
   # Require license headers in source files
   require_header: false
+  
+  # File patterns to include in header checks
+  include_globs:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.java"
+  
+  # File patterns to exclude from header checks
+  exclude_globs:
+    - "**/test_*.py"
+    - "**/*_test.py"
 
 # File classification glob patterns
 globs:
@@ -57,6 +69,23 @@ rules:
   # Override severity for specific rules
   # Valid severities: error, warning, info
   severity_overrides: {}
+
+# Integration tool configuration
+integration:
+  # Enable/disable repo analyzer integration
+  enable_repo_analyzer: true
+  
+  # Path to repo-analyzer binary (auto-detect if None)
+  repo_analyzer_binary: null
+  
+  # Analyzer workspace mode: 'temp_workspace' or 'direct_output'
+  repo_analyzer_workspace_mode: direct_output
+  
+  # Enable/disable license header checking
+  enable_license_headers: true
+  
+  # Path to license-header binary (auto-detect if None)
+  license_header_binary: null
 
 # Repository metadata and tags
 repo_tags:

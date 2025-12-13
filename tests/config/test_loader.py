@@ -39,12 +39,12 @@ def test_load_yaml_config_valid(tmp_path):
             "spdx_id": "MIT",
         },
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     loaded = load_yaml_config(config_file)
-    
+
     assert loaded["target_path"] == "/test/path"
     assert loaded["outdir"] == "/test/output"
     assert loaded["license"]["spdx_id"] == "MIT"
@@ -54,9 +54,9 @@ def test_load_yaml_config_empty(tmp_path):
     """Test loading empty YAML config."""
     config_file = tmp_path / "config.yml"
     config_file.write_text("")
-    
+
     loaded = load_yaml_config(config_file)
-    
+
     assert loaded == {}
 
 
@@ -70,7 +70,7 @@ def test_load_yaml_config_invalid(tmp_path):
     """Test loading invalid YAML raises error."""
     config_file = tmp_path / "config.yml"
     config_file.write_text("[not a mapping")
-    
+
     with pytest.raises(yaml.YAMLError):
         load_yaml_config(config_file)
 
@@ -79,9 +79,9 @@ def test_apply_cli_overrides_empty():
     """Test CLI overrides with empty dicts."""
     config_dict = {"target_path": "/config/path"}
     cli_args = {}
-    
+
     result = apply_cli_overrides(config_dict, cli_args)
-    
+
     assert result["target_path"] == "/config/path"
 
 
@@ -95,9 +95,9 @@ def test_apply_cli_overrides_precedence():
         "target_path": "/cli/path",
         "keep_artifacts": True,
     }
-    
+
     result = apply_cli_overrides(config_dict, cli_args)
-    
+
     assert result["target_path"] == "/cli/path"
     assert result["outdir"] == "/config/output"
     assert result["keep_artifacts"] is True
@@ -113,9 +113,9 @@ def test_apply_cli_overrides_none_values():
         "target_path": None,
         "outdir": "/cli/output",
     }
-    
+
     result = apply_cli_overrides(config_dict, cli_args)
-    
+
     assert result["target_path"] == "/config/path"
     assert result["outdir"] == "/cli/output"
 
@@ -124,9 +124,9 @@ def test_find_config_file_current_directory(tmp_path):
     """Test finding config in current directory."""
     config_file = tmp_path / "repo-policy.yml"
     config_file.write_text("target_path: .")
-    
+
     found = find_config_file(str(tmp_path))
-    
+
     assert found == config_file
 
 
@@ -134,12 +134,12 @@ def test_find_config_file_parent_directory(tmp_path):
     """Test finding config in parent directory."""
     config_file = tmp_path / "repo-policy.yml"
     config_file.write_text("target_path: .")
-    
+
     subdir = tmp_path / "subdir"
     subdir.mkdir()
-    
+
     found = find_config_file(str(subdir))
-    
+
     assert found == config_file
 
 
@@ -147,22 +147,22 @@ def test_find_config_file_with_git_root(tmp_path):
     """Test finding config stops at git root."""
     git_dir = tmp_path / ".git"
     git_dir.mkdir()
-    
+
     config_file = tmp_path / "repo-policy.yml"
     config_file.write_text("target_path: .")
-    
+
     subdir = tmp_path / "deep" / "subdir"
     subdir.mkdir(parents=True)
-    
+
     found = find_config_file(str(subdir))
-    
+
     assert found == config_file
 
 
 def test_find_config_file_not_found(tmp_path):
     """Test when config file is not found."""
     found = find_config_file(str(tmp_path))
-    
+
     assert found is None
 
 
@@ -171,9 +171,9 @@ def test_find_config_file_alternative_names(tmp_path):
     # Test .repo-policy.yml
     config_file = tmp_path / ".repo-policy.yml"
     config_file.write_text("target_path: .")
-    
+
     found = find_config_file(str(tmp_path))
-    
+
     assert found == config_file
 
 
@@ -184,15 +184,15 @@ def test_find_config_file_max_depth(tmp_path):
     for i in range(10):
         deep_path = deep_path / f"level{i}"
     deep_path.mkdir(parents=True)
-    
+
     # Put config at the root
     config_file = tmp_path / "repo-policy.yml"
     config_file.write_text("target_path: .")
-    
+
     # Should find with sufficient depth
     found = find_config_file(str(deep_path), max_depth=20)
     assert found == config_file
-    
+
     # Should not find with insufficient depth
     found = find_config_file(str(deep_path), max_depth=5)
     assert found is None
@@ -207,12 +207,12 @@ def test_load_config_with_file(tmp_path):
             "spdx_id": "Apache-2.0",
         },
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     config = load_config(config_path=str(config_file))
-    
+
     assert config.target_path == "/test/path"
     assert config.license.spdx_id == "Apache-2.0"
 
@@ -221,11 +221,12 @@ def test_load_config_missing_allowed(tmp_path):
     """Test loading config with missing file allowed."""
     # Change to temp directory where no config exists
     import os
+
     original_cwd = os.getcwd()
     try:
         os.chdir(tmp_path)
         config = load_config(allow_missing=True)
-        
+
         # Should use defaults
         assert config.target_path == "."
         assert config.outdir == ".repo-policy-output"
@@ -236,6 +237,7 @@ def test_load_config_missing_allowed(tmp_path):
 def test_load_config_missing_not_allowed(tmp_path):
     """Test loading config with missing file raises error."""
     import os
+
     original_cwd = os.getcwd()
     try:
         os.chdir(tmp_path)
@@ -252,17 +254,17 @@ def test_load_config_with_cli_overrides(tmp_path):
         "target_path": "/config/path",
         "outdir": "/config/output",
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     cli_args = {
         "target_path": "/cli/path",
         "keep_artifacts": True,
     }
-    
+
     config = load_config(config_path=str(config_file), cli_args=cli_args)
-    
+
     assert config.target_path == "/cli/path"
     assert config.outdir == "/config/output"
     assert config.keep_artifacts is True
@@ -274,10 +276,10 @@ def test_load_config_validation_error(tmp_path):
     config_data = {
         "preset": "invalid-preset",
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     with pytest.raises(ValidationError):
         load_config(config_path=str(config_file))
 
@@ -292,13 +294,13 @@ def test_load_config_severity_override_validation(tmp_path):
             },
         },
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     with pytest.raises(ValidationError) as exc_info:
         load_config(config_path=str(config_file))
-    
+
     error_msg = str(exc_info.value)
     assert "Invalid severity" in error_msg
 
@@ -330,12 +332,12 @@ def test_load_config_complete_example(tmp_path):
         "preset": "standard",
         "keep_artifacts": True,
     }
-    
+
     with open(config_file, "w") as f:
         yaml.dump(config_data, f)
-    
+
     config = load_config(config_path=str(config_file))
-    
+
     assert config.target_path == "/test/repo"
     assert config.outdir == "/test/output"
     assert config.globs.source == ["**/*.py"]

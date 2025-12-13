@@ -88,7 +88,7 @@ class RuleConfig(BaseModel):
         """Validate severity override values."""
         if not isinstance(v, dict):
             return v
-        
+
         result = {}
         for rule, severity in v.items():
             if isinstance(severity, str):
@@ -101,9 +101,7 @@ class RuleConfig(BaseModel):
                         f"Valid values: {', '.join(valid_values)}"
                     )
             else:
-                raise TypeError(
-                    f"Severity must be a string, not {type(severity).__name__}"
-                )
+                raise TypeError(f"Severity must be a string, not {type(severity).__name__}")
         return result
 
 
@@ -122,6 +120,50 @@ class LicenseConfig(BaseModel):
         default=False,
         description="Require license headers in source files",
     )
+    include_globs: List[str] = Field(
+        default_factory=lambda: ["**/*.py", "**/*.js", "**/*.ts", "**/*.java"],
+        description="File patterns to include in header checks",
+    )
+    exclude_globs: List[str] = Field(
+        default_factory=lambda: ["**/test_*.py", "**/*_test.py"],
+        description="File patterns to exclude from header checks",
+    )
+
+
+class IntegrationConfig(BaseModel):
+    """Integration tool configuration."""
+
+    repo_analyzer_binary: Optional[str] = Field(
+        default=None,
+        description="Path to repo-analyzer binary (auto-detect if None)",
+    )
+    repo_analyzer_workspace_mode: str = Field(
+        default="direct_output",
+        description="Analyzer workspace mode: 'temp_workspace' or 'direct_output'",
+    )
+    license_header_binary: Optional[str] = Field(
+        default=None,
+        description="Path to license-header binary (auto-detect if None)",
+    )
+    enable_repo_analyzer: bool = Field(
+        default=True,
+        description="Enable repo analyzer integration",
+    )
+    enable_license_headers: bool = Field(
+        default=True,
+        description="Enable license header checking",
+    )
+
+    @field_validator("repo_analyzer_workspace_mode")
+    @classmethod
+    def validate_workspace_mode(cls, v):
+        """Validate workspace mode value."""
+        valid_modes = ["temp_workspace", "direct_output"]
+        if v not in valid_modes:
+            raise ValueError(
+                f"Invalid workspace mode '{v}'. Valid values: {', '.join(valid_modes)}"
+            )
+        return v
 
 
 class Config(BaseModel):
@@ -139,37 +181,43 @@ class Config(BaseModel):
         default=None,
         description="Path to the config file (for tracking purposes)",
     )
-    
+
     # File classification
     globs: GlobPatterns = Field(
         default_factory=GlobPatterns,
         description="Glob patterns for file classification",
     )
-    
+
     # Rule configuration
     rules: RuleConfig = Field(
         default_factory=RuleConfig,
         description="Rule configuration",
     )
-    
+
     # License configuration
     license: LicenseConfig = Field(
         default_factory=LicenseConfig,
         description="License and header configuration",
     )
-    
+
+    # Integration configuration
+    integration: IntegrationConfig = Field(
+        default_factory=IntegrationConfig,
+        description="External tool integration configuration",
+    )
+
     # Repository metadata
     repo_tags: Dict[str, str] = Field(
         default_factory=dict,
         description="Repository tags/metadata (e.g., repo_type: 'library')",
     )
-    
+
     # Preset configuration
     preset: Optional[Preset] = Field(
         default=None,
         description="Configuration preset to apply",
     )
-    
+
     # CLI-specific options
     keep_artifacts: bool = Field(
         default=False,
@@ -195,9 +243,7 @@ class Config(BaseModel):
                 return Preset(v.lower())
             except ValueError:
                 valid_values = [p.value for p in Preset]
-                raise ValueError(
-                    f"Invalid preset '{v}'. Valid values: {', '.join(valid_values)}"
-                )
+                raise ValueError(f"Invalid preset '{v}'. Valid values: {', '.join(valid_values)}")
         raise TypeError(f"Preset must be a string, not {type(v).__name__}")
 
     def model_post_init(self, __context):

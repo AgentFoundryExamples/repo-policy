@@ -26,12 +26,12 @@ from config.schema import Preset
 def setup_logging(verbose: bool = False) -> None:
     """
     Configure structured logging.
-    
+
     Args:
         verbose: Enable verbose/debug logging
     """
     log_level = logging.DEBUG if verbose else logging.INFO
-    
+
     logging.basicConfig(
         level=log_level,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -42,7 +42,7 @@ def setup_logging(verbose: bool = False) -> None:
 def create_parser() -> argparse.ArgumentParser:
     """
     Create the argument parser for repo-policy CLI.
-    
+
     Returns:
         Configured ArgumentParser
     """
@@ -51,7 +51,7 @@ def create_parser() -> argparse.ArgumentParser:
         description="Deterministic repository policy enforcement tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
     # Global options
     parser.add_argument(
         "-v",
@@ -93,13 +93,13 @@ def create_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Show advice and recommendations (stub)",
     )
-    
+
     # Subcommands
     subparsers = parser.add_subparsers(
         dest="command",
         help="Available commands",
     )
-    
+
     # 'check' command (default)
     check_parser = subparsers.add_parser(
         "check",
@@ -107,7 +107,7 @@ def create_parser() -> argparse.ArgumentParser:
         description="Run policy checks against the repository",
     )
     check_parser.set_defaults(func=run_check)
-    
+
     # 'init' command
     init_parser = subparsers.add_parser(
         "init",
@@ -126,60 +126,62 @@ def create_parser() -> argparse.ArgumentParser:
         help="Configuration preset to use (baseline, standard, strict)",
     )
     init_parser.set_defaults(func=run_init)
-    
+
     return parser
 
 
 def run_check(args: argparse.Namespace) -> int:
     """
     Run the check command.
-    
+
     Args:
         args: Parsed command-line arguments
-        
+
     Returns:
         Exit code (0 for success, 1 for error)
     """
     from cli.commands.check import check_command
+
     return check_command(args)
 
 
 def run_init(args: argparse.Namespace) -> int:
     """
     Run the init command.
-    
+
     Args:
         args: Parsed command-line arguments
-        
+
     Returns:
         Exit code (0 for success, 1 for error)
     """
     from cli.commands.init import init_command
+
     return init_command(args)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
     """
     Main entry point for repo-policy CLI.
-    
+
     Args:
         argv: Command-line arguments (defaults to sys.argv[1:])
-        
+
     Returns:
         Exit code (0 for success, 1 for error)
     """
     parser = create_parser()
     args = parser.parse_args(argv)
-    
+
     # Setup logging
     setup_logging(verbose=args.verbose)
     logger = logging.getLogger(__name__)
-    
+
     # Default to 'check' command if no command specified
     if not args.command:
         args.command = "check"
         args.func = run_check
-    
+
     # Execute command
     try:
         return args.func(args)
