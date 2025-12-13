@@ -272,15 +272,15 @@ class TestFormatEvidence:
 
     def test_format_evidence_list_large(self):
         """Test formatting evidence with large list (should be truncated)."""
-        # Create a list with more than MAX_EVIDENCE_ITEMS items
+        # Create a list with more than MAX_EVIDENCE_ITEMS items (currently 50)
         evidence = {
-            "files": [f"file{i}.py" for i in range(30)],
+            "files": [f"file{i}.py" for i in range(75)],
         }
         
         output = _format_evidence(evidence)
         
-        assert "**files:** (30 items, showing first 20)" in output
-        assert "... and 10 more" in output
+        assert "**files:** (75 items, showing first 50)" in output
+        assert "... and 25 more" in output
 
     def test_format_evidence_dict(self):
         """Test formatting evidence with nested dict."""

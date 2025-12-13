@@ -15,11 +15,15 @@
 
 import hashlib
 import logging
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
+
+# Configuration constants
+GIT_TIMEOUT_SECONDS = 10  # Increased timeout for large repositories
 
 
 def get_git_commit_hash(repo_path: Path) -> Optional[str]:
@@ -32,19 +36,32 @@ def get_git_commit_hash(repo_path: Path) -> Optional[str]:
     Returns:
         Commit hash or None if not available
     """
+    if not shutil.which("git"):
+        logger.debug("git command not found, skipping commit hash retrieval.")
+        return None
+    
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"],
             cwd=repo_path,
             capture_output=True,
             text=True,
-            timeout=5,
+            timeout=GIT_TIMEOUT_SECONDS,
+            check=True,
         )
-        if result.returncode == 0:
-            return result.stdout.strip()
-    except (subprocess.TimeoutExpired, FileNotFoundError, Exception) as e:
-        logger.debug(f"Failed to get git commit hash: {e}")
-    return None
+        return result.stdout.strip()
+    except subprocess.TimeoutExpired:
+        logger.debug(f"Git command timed out after {GIT_TIMEOUT_SECONDS} seconds")
+        return None
+    except subprocess.CalledProcessError as e:
+        logger.debug(f"Git command failed with exit code {e.returncode}")
+        return None
+    except FileNotFoundError:
+        logger.debug("git executable not found")
+        return None
+    except OSError as e:
+        logger.debug(f"OS error while executing git: {e}")
+        return None
 
 
 def compute_config_hash(config_path: Optional[str]) -> Optional[str]:
@@ -65,9 +82,12 @@ def compute_config_hash(config_path: Optional[str]) -> Optional[str]:
         if config_file.exists():
             content = config_file.read_bytes()
             return hashlib.sha256(content).hexdigest()
-    except Exception as e:
-        logger.debug(f"Failed to compute config hash: {e}")
-    return None
+    except (OSError, IOError) as e:
+        logger.debug(f"Failed to read config file for hashing: {e}")
+        return None
+    except ValueError as e:
+        logger.debug(f"Invalid config path: {e}")
+        return None
 
 
 def extract_report_metadata(

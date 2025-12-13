@@ -39,9 +39,11 @@ class TestGitCommitHash:
         result = get_git_commit_hash(tmp_path)
         assert result is None or isinstance(result, str)
 
+    @patch("reporting.metadata.shutil.which")
     @patch("reporting.metadata.subprocess.run")
-    def test_get_git_commit_hash_mocked_success(self, mock_run, tmp_path):
+    def test_get_git_commit_hash_mocked_success(self, mock_run, mock_which, tmp_path):
         """Test getting git commit hash with mocked subprocess."""
+        mock_which.return_value = "/usr/bin/git"
         mock_run.return_value = Mock(returncode=0, stdout="abc123def456\n")
         
         result = get_git_commit_hash(tmp_path)
@@ -49,20 +51,34 @@ class TestGitCommitHash:
         assert result == "abc123def456"
         mock_run.assert_called_once()
 
+    @patch("reporting.metadata.shutil.which")
     @patch("reporting.metadata.subprocess.run")
-    def test_get_git_commit_hash_not_a_repo(self, mock_run, tmp_path):
+    def test_get_git_commit_hash_not_a_repo(self, mock_run, mock_which, tmp_path):
         """Test getting git commit hash when not in a git repo."""
-        mock_run.return_value = Mock(returncode=128, stdout="")
+        from subprocess import CalledProcessError
+        mock_which.return_value = "/usr/bin/git"
+        mock_run.side_effect = CalledProcessError(128, "git")
         
         result = get_git_commit_hash(tmp_path)
         
         assert result is None
 
+    @patch("reporting.metadata.shutil.which")
     @patch("reporting.metadata.subprocess.run")
-    def test_get_git_commit_hash_timeout(self, mock_run, tmp_path):
+    def test_get_git_commit_hash_timeout(self, mock_run, mock_which, tmp_path):
         """Test getting git commit hash with timeout."""
         from subprocess import TimeoutExpired
-        mock_run.side_effect = TimeoutExpired("git", 5)
+        mock_which.return_value = "/usr/bin/git"
+        mock_run.side_effect = TimeoutExpired("git", 10)
+        
+        result = get_git_commit_hash(tmp_path)
+        
+        assert result is None
+
+    @patch("reporting.metadata.shutil.which")
+    def test_get_git_commit_hash_git_not_found(self, mock_which, tmp_path):
+        """Test getting git commit hash when git is not installed."""
+        mock_which.return_value = None
         
         result = get_git_commit_hash(tmp_path)
         

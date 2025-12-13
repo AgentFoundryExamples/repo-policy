@@ -343,6 +343,26 @@ Reports generated:
   Markdown: /tmp/reports/policy_report.md
 ```
 
+## Configuration
+
+### Adjustable Parameters
+
+The following parameters can be adjusted in the source code to customize report behavior:
+
+- **`MAX_EVIDENCE_ITEMS`** (in `src/reporting/markdown_generator.py`): Maximum number of evidence items to display in Markdown before summarizing (default: 50). Full data is always available in the JSON report.
+
+- **`GIT_TIMEOUT_SECONDS`** (in `src/reporting/metadata.py`): Timeout for git operations in seconds (default: 10). Increase this value for large repositories or slow filesystems.
+
+### Error Handling
+
+Report generation errors are logged prominently:
+
+- **I/O errors**: Reports required for CI/CD automation - output directory permissions are checked
+- **General errors**: Failures are logged with detailed error messages
+- **Failed reports**: The CLI will indicate if reports were not generated due to errors
+
+If report generation fails, the policy check will still complete and return the appropriate exit code based on rule results, but a warning will be displayed instead of the report paths.
+
 ## Versioning
 
 The report format version is included in the JSON report (`"version": "1.0"`). Future versions may add new fields but will maintain backward compatibility within the same major version.

@@ -26,7 +26,9 @@ from reporting.metadata import extract_report_metadata
 logger = logging.getLogger(__name__)
 
 # Maximum number of evidence items to display before summarizing
-MAX_EVIDENCE_ITEMS = 20
+# This can be adjusted based on typical use cases - set higher for more detail,
+# lower for more concise reports. Full data is always available in the JSON report.
+MAX_EVIDENCE_ITEMS = 50
 
 
 def generate_markdown_report(

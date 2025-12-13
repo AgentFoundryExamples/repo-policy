@@ -230,6 +230,7 @@ def check_command(args: argparse.Namespace) -> int:
     json_report_path = outdir / "policy_report.json"
     md_report_path = outdir / "policy_report.md"
     
+    report_generation_failed = False
     try:
         generate_json_report(
             rule_results=rule_results,
@@ -246,9 +247,14 @@ def check_command(args: argparse.Namespace) -> int:
             config_path=config.config_file or args.config or "repo-policy.yml",
             output_path=md_report_path,
         )
+    except (OSError, IOError) as e:
+        logger.error(f"Failed to write reports (I/O error): {e}")
+        logger.error("Reports are required for CI/CD automation. Please check output directory permissions.")
+        report_generation_failed = True
     except Exception as e:
         logger.error(f"Failed to generate reports: {e}", exc_info=getattr(args, 'verbose', False))
-        # Continue even if report generation fails
+        logger.error("Report generation failed. Some CI/CD automation may not function correctly.")
+        report_generation_failed = True
     
     # Report results summary
     logger.info("=" * 60)
@@ -263,9 +269,12 @@ def check_command(args: argparse.Namespace) -> int:
     logger.info("=" * 60)
     
     # Log report paths
-    logger.info(f"Reports generated:")
-    logger.info(f"  JSON: {json_report_path}")
-    logger.info(f"  Markdown: {md_report_path}")
+    if not report_generation_failed:
+        logger.info(f"Reports generated:")
+        logger.info(f"  JSON: {json_report_path}")
+        logger.info(f"  Markdown: {md_report_path}")
+    else:
+        logger.warning("Reports were not generated due to errors (see above)")
     
     # Determine exit code based on error-level failures
     if rule_results.has_errors():
