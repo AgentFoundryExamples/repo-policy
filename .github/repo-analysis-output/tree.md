@@ -30,11 +30,39 @@
     ├── __init__.py
     ├── loader.py
     └── schema.py
+  ├── facts
+    ├── __init__.py
+    └── extractor.py
   ├── integration
     ├── __init__.py
     ├── context.py
     ├── license_headers.py
     └── repo_analyzer.py
+  ├── rules
+    ├── docs
+      ├── __init__.py
+      └── readme_rule.py
+    ├── hygiene
+      ├── __init__.py
+      ├── ci_rule.py
+      ├── file_size_rule.py
+      ├── forbidden_files_rule.py
+      └── gitignore_rule.py
+    ├── license
+      ├── __init__.py
+      ├── header_rule.py
+      ├── license_file_rule.py
+      └── spdx_id_rule.py
+    ├── tests
+      ├── __init__.py
+      └── tests_vs_sources_rule.py
+    ├── __init__.py
+    ├── base.py
+    ├── engine.py
+    └── result.py
+  ├── utils
+    ├── __init__.py
+    └── glob_matcher.py
   └── __init__.py
 ├── tests
   ├── cli
@@ -46,6 +74,9 @@
     ├── __init__.py
     ├── test_loader.py
     └── test_schema.py
+  ├── facts
+    ├── __init__.py
+    └── test_extractor.py
   ├── integration
     ├── __init__.py
     ├── test_context.py

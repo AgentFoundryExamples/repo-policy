@@ -140,6 +140,20 @@
         },
         {
           "type": "directory",
+          "name": "facts",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "extractor.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "integration",
           "children": [
             {
@@ -157,6 +171,118 @@
             {
               "type": "file",
               "name": "repo_analyzer.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "rules",
+          "children": [
+            {
+              "type": "directory",
+              "name": "docs",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "__init__.py"
+                },
+                {
+                  "type": "file",
+                  "name": "readme_rule.py"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "hygiene",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "__init__.py"
+                },
+                {
+                  "type": "file",
+                  "name": "ci_rule.py"
+                },
+                {
+                  "type": "file",
+                  "name": "file_size_rule.py"
+                },
+                {
+                  "type": "file",
+                  "name": "forbidden_files_rule.py"
+                },
+                {
+                  "type": "file",
+                  "name": "gitignore_rule.py"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "license",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "__init__.py"
+                },
+                {
+                  "type": "file",
+                  "name": "header_rule.py"
+                },
+                {
+                  "type": "file",
+                  "name": "license_file_rule.py"
+                },
+                {
+                  "type": "file",
+                  "name": "spdx_id_rule.py"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "tests",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "__init__.py"
+                },
+                {
+                  "type": "file",
+                  "name": "tests_vs_sources_rule.py"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "base.py"
+            },
+            {
+              "type": "file",
+              "name": "engine.py"
+            },
+            {
+              "type": "file",
+              "name": "result.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "utils",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "glob_matcher.py"
             }
           ]
         },
@@ -207,6 +333,20 @@
             {
               "type": "file",
               "name": "test_schema.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "facts",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "test_extractor.py"
             }
           ]
         },

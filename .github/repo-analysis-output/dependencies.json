@@ -119,6 +119,35 @@
       }
     },
     {
+      "id": "src/facts/__init__.py",
+      "path": "src/facts/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/facts/extractor.py",
+      "path": "src/facts/extractor.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "fnmatch",
+          "json",
+          "logging",
+          "pathlib.Path",
+          "typing.Dict",
+          "typing.List",
+          "typing.Optional",
+          "typing.Set"
+        ],
+        "third-party": []
+      }
+    },
+    {
       "id": "src/integration/__init__.py",
       "path": "src/integration/__init__.py",
       "type": "file",
@@ -180,6 +209,220 @@
           "typing.Dict",
           "typing.List",
           "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/__init__.py",
+      "path": "src/rules/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/base.py",
+      "path": "src/rules/base.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "abc.ABC",
+          "abc.abstractmethod",
+          "fnmatch",
+          "logging",
+          "pathlib.Path",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/docs/__init__.py",
+      "path": "src/rules/docs/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/docs/readme_rule.py",
+      "path": "src/rules/docs/readme_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "re",
+          "typing.List"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/engine.py",
+      "path": "src/rules/engine.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "logging",
+          "pathlib.Path",
+          "typing.Dict",
+          "typing.List",
+          "typing.Type"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/hygiene/__init__.py",
+      "path": "src/rules/hygiene/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/hygiene/ci_rule.py",
+      "path": "src/rules/hygiene/ci_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "logging.getLogger",
+          "pathlib.Path",
+          "re",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/hygiene/file_size_rule.py",
+      "path": "src/rules/hygiene/file_size_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/hygiene/forbidden_files_rule.py",
+      "path": "src/rules/hygiene/forbidden_files_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/hygiene/gitignore_rule.py",
+      "path": "src/rules/hygiene/gitignore_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/license/__init__.py",
+      "path": "src/rules/license/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/license/header_rule.py",
+      "path": "src/rules/license/header_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/license/license_file_rule.py",
+      "path": "src/rules/license/license_file_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/license/spdx_id_rule.py",
+      "path": "src/rules/license/spdx_id_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/result.py",
+      "path": "src/rules/result.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "enum.Enum",
+          "typing.Any",
+          "typing.Dict",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/tests/__init__.py",
+      "path": "src/rules/tests/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/rules/tests/tests_vs_sources_rule.py",
+      "path": "src/rules/tests/tests_vs_sources_rule.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/utils/__init__.py",
+      "path": "src/utils/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/utils/glob_matcher.py",
+      "path": "src/utils/glob_matcher.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "fnmatch",
+          "pathlib.Path",
+          "typing.List"
         ],
         "third-party": []
       }
@@ -288,6 +531,29 @@
       }
     },
     {
+      "id": "tests/facts/__init__.py",
+      "path": "tests/facts/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/facts/test_extractor.py",
+      "path": "tests/facts/test_extractor.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "pathlib.Path",
+          "unittest.mock.MagicMock"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
       "id": "tests/integration/__init__.py",
       "path": "tests/integration/__init__.py",
       "type": "file",
@@ -359,6 +625,26 @@
       "target": "src/integration/context.py"
     },
     {
+      "source": "src/cli/commands/check.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/rules/docs/__init__.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/rules/license/__init__.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/rules/hygiene/__init__.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/rules/tests/__init__.py"
+    },
+    {
       "source": "src/cli/commands/init.py",
       "target": "src/config/schema.py"
     },
@@ -379,12 +665,188 @@
       "target": "src/cli/commands/init.py"
     },
     {
+      "source": "src/facts/__init__.py",
+      "target": "src/facts/extractor.py"
+    },
+    {
+      "source": "src/facts/extractor.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "src/facts/extractor.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "src/facts/extractor.py",
+      "target": "src/utils/glob_matcher.py"
+    },
+    {
       "source": "src/integration/context.py",
       "target": "src/integration/repo_analyzer.py"
     },
     {
       "source": "src/integration/context.py",
       "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "src/rules/__init__.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/__init__.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "src/rules/__init__.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/base.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "src/rules/base.py",
+      "target": "src/facts/extractor.py"
+    },
+    {
+      "source": "src/rules/base.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "src/rules/base.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/base.py",
+      "target": "src/utils/glob_matcher.py"
+    },
+    {
+      "source": "src/rules/docs/__init__.py",
+      "target": "src/rules/docs/readme_rule.py"
+    },
+    {
+      "source": "src/rules/docs/readme_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/docs/readme_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/engine.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "src/rules/engine.py",
+      "target": "src/facts/extractor.py"
+    },
+    {
+      "source": "src/rules/engine.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "src/rules/engine.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/engine.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/hygiene/__init__.py",
+      "target": "src/rules/hygiene/ci_rule.py"
+    },
+    {
+      "source": "src/rules/hygiene/__init__.py",
+      "target": "src/rules/hygiene/gitignore_rule.py"
+    },
+    {
+      "source": "src/rules/hygiene/__init__.py",
+      "target": "src/rules/hygiene/forbidden_files_rule.py"
+    },
+    {
+      "source": "src/rules/hygiene/__init__.py",
+      "target": "src/rules/hygiene/file_size_rule.py"
+    },
+    {
+      "source": "src/rules/hygiene/ci_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/hygiene/ci_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/hygiene/file_size_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/hygiene/file_size_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/hygiene/forbidden_files_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/hygiene/forbidden_files_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/hygiene/gitignore_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/hygiene/gitignore_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/license/__init__.py",
+      "target": "src/rules/license/license_file_rule.py"
+    },
+    {
+      "source": "src/rules/license/__init__.py",
+      "target": "src/rules/license/spdx_id_rule.py"
+    },
+    {
+      "source": "src/rules/license/__init__.py",
+      "target": "src/rules/license/header_rule.py"
+    },
+    {
+      "source": "src/rules/license/header_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/license/header_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/license/license_file_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/license/license_file_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/license/spdx_id_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/license/spdx_id_rule.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/rules/tests/__init__.py",
+      "target": "src/rules/tests/tests_vs_sources_rule.py"
+    },
+    {
+      "source": "src/rules/tests/tests_vs_sources_rule.py",
+      "target": "src/rules/base.py"
+    },
+    {
+      "source": "src/rules/tests/tests_vs_sources_rule.py",
+      "target": "src/rules/result.py"
     },
     {
       "source": "tests/cli/test_check.py",
@@ -415,6 +877,14 @@
       "target": "src/config/schema.py"
     },
     {
+      "source": "tests/facts/test_extractor.py",
+      "target": "src/facts/extractor.py"
+    },
+    {
+      "source": "tests/facts/test_extractor.py",
+      "target": "src/config/schema.py"
+    },
+    {
       "source": "tests/integration/test_context.py",
       "target": "src/integration/context.py"
     },
@@ -437,15 +907,20 @@
   ],
   "external_dependencies_summary": {
     "stdlib": [
+      "abc.ABC",
+      "abc.abstractmethod",
       "argparse",
       "argparse.Namespace",
       "dataclasses.dataclass",
       "dataclasses.field",
       "enum.Enum",
+      "fnmatch",
       "json",
       "logging",
+      "logging.getLogger",
       "os",
       "pathlib.Path",
+      "re",
       "shutil",
       "subprocess",
       "sys",
@@ -454,6 +929,8 @@
       "typing.Dict",
       "typing.List",
       "typing.Optional",
+      "typing.Set",
+      "typing.Type",
       "unittest.mock.MagicMock",
       "unittest.mock.patch"
     ],
@@ -465,7 +942,7 @@
       "pytest",
       "yaml"
     ],
-    "stdlib_count": 19,
+    "stdlib_count": 26,
     "third-party_count": 6
   }
 }

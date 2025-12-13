@@ -4,7 +4,7 @@ Heuristic summaries of source files based on filenames, extensions, and paths.
 
 Schema Version: 2.0
 
-Total files: 25
+Total files: 48
 
 ## src/__init__.py
 **Language:** Python  
@@ -38,8 +38,8 @@ Total files: 25
 **Role:** implementation  
 **Role Justification:** general implementation file (default classification)  
 **Summary:** Python core implementation  
-**Size:** 7.16 KB  
-**LOC:** 148  
+**Size:** 8.37 KB  
+**LOC:** 170  
 **TODOs/FIXMEs:** 0  
 
 ## src/cli/commands/init.py
@@ -83,8 +83,26 @@ Total files: 25
 **Role:** model  
 **Role Justification:** model/schema name 'schema'  
 **Summary:** Python data models (role: model)  
-**Size:** 7.65 KB  
-**LOC:** 198  
+**Size:** 8.43 KB  
+**LOC:** 217  
+**TODOs/FIXMEs:** 0  
+
+## src/facts/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.72 KB  
+**LOC:** 3  
+**TODOs/FIXMEs:** 0  
+
+## src/facts/extractor.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 12.88 KB  
+**LOC:** 238  
 **TODOs/FIXMEs:** 0  
 
 ## src/integration/__init__.py
@@ -123,6 +141,177 @@ Total files: 25
 **LOC:** 310  
 **TODOs/FIXMEs:** 0  
 
+## src/rules/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.88 KB  
+**LOC:** 12  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/base.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 6.17 KB  
+**LOC:** 150  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/docs/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.66 KB  
+**LOC:** 3  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/docs/readme_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 4.54 KB  
+**LOC:** 85  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/engine.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 5.19 KB  
+**LOC:** 115  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/hygiene/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.87 KB  
+**LOC:** 6  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/hygiene/ci_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 6.07 KB  
+**LOC:** 115  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/hygiene/file_size_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 3.49 KB  
+**LOC:** 56  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/hygiene/forbidden_files_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 2.59 KB  
+**LOC:** 46  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/hygiene/gitignore_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 3.18 KB  
+**LOC:** 55  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/license/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.80 KB  
+**LOC:** 5  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/license/header_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 4.25 KB  
+**LOC:** 71  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/license/license_file_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 1.79 KB  
+**LOC:** 30  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/license/spdx_id_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 2.59 KB  
+**LOC:** 46  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/result.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 1.97 KB  
+**LOC:** 42  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/tests/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python test module initialization (role: module-init)  
+**Size:** 0.69 KB  
+**LOC:** 3  
+**TODOs/FIXMEs:** 0  
+
+## src/rules/tests/tests_vs_sources_rule.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 4.92 KB  
+**LOC:** 89  
+**TODOs/FIXMEs:** 0  
+
+## src/utils/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.68 KB  
+**LOC:** 3  
+**TODOs/FIXMEs:** 0  
+
+## src/utils/glob_matcher.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 2.42 KB  
+**LOC:** 36  
+**TODOs/FIXMEs:** 0  
+
 ## tests/__init__.py
 **Language:** Python  
 **Role:** test  
@@ -146,8 +335,8 @@ Total files: 25
 **Role:** test  
 **Role Justification:** filename starts with 'test_'  
 **Summary:** Python test file (role: test)  
-**Size:** 14.00 KB  
-**LOC:** 345  
+**Size:** 14.46 KB  
+**LOC:** 338  
 **TODOs/FIXMEs:** 0  
 
 ## tests/cli/test_init.py
@@ -193,6 +382,24 @@ Total files: 25
 **Summary:** Python test file (role: test)  
 **Size:** 6.46 KB  
 **LOC:** 159  
+**TODOs/FIXMEs:** 0  
+
+## tests/facts/__init__.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** located in 'tests' directory  
+**Summary:** Python test module initialization (role: test)  
+**Size:** 0.60 KB  
+**LOC:** 1  
+**TODOs/FIXMEs:** 0  
+
+## tests/facts/test_extractor.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** filename starts with 'test_'  
+**Summary:** Python test file (role: test)  
+**Size:** 5.85 KB  
+**LOC:** 116  
 **TODOs/FIXMEs:** 0  
 
 ## tests/integration/__init__.py
