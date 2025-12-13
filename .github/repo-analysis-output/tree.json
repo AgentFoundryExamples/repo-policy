@@ -1,6 +1,6 @@
 {
   "type": "directory",
-  "name": "agent-foundry-template",
+  "name": "repo-policy",
   "children": [
     {
       "type": "directory",

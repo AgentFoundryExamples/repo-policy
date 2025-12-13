@@ -1,4 +1,4 @@
-# agent-foundry-template
+# repo-policy
 
 ├── .github
   ├── af-config
