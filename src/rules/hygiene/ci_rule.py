@@ -66,14 +66,14 @@ class CiRule(BaseRule):
         
         # Check if tests are detected
         if not test_info["has_test_commands"]:
-            # This is a warning by default (can be overridden)
-            # Use the severity from config overrides or default to WARNING
-            warning_severity = self._get_test_warning_severity()
+            # This is a warning when tests aren't detected (heuristic check)
+            # Default to WARNING severity, but can be overridden via rules.severity_overrides
+            from rules.result import RuleStatus
             
             return RuleResult(
                 rule_id=self.rule_id,
-                severity=warning_severity,
-                status=self.status_from_severity(warning_severity),
+                severity=RuleSeverity.WARNING,  # Always WARNING for heuristic failures
+                status=RuleStatus.WARN,
                 message=f"CI workflows found but no test commands detected (heuristic check)",
                 evidence={
                     "has_ci": True,
@@ -89,7 +89,7 @@ class CiRule(BaseRule):
                     "  Rust: cargo test\n"
                     "  Java: mvn test, gradle test\n\n"
                     "If tests are running but not detected, this is a heuristic warning "
-                    "that can be safely ignored or overridden."
+                    "that can be safely ignored or the rule can be excluded."
                 ),
                 rule_tags=self.rule_tags,
             )
@@ -105,31 +105,6 @@ class CiRule(BaseRule):
             },
         )
     
-    def _get_test_warning_severity(self) -> RuleSeverity:
-        """Get severity for test warning (default WARNING, but can be overridden)."""
-        # Check if there's a specific override for test detection
-        overrides = self.config.rules.severity_overrides
-        test_rule_id = f"{self.rule_id}-tests"
-        
-        if test_rule_id in overrides:
-            override_severity = overrides[test_rule_id]
-            if override_severity.value == "error":
-                return RuleSeverity.ERROR
-            elif override_severity.value == "warning":
-                return RuleSeverity.WARNING
-            elif override_severity.value == "info":
-                return RuleSeverity.INFO
-        
-        # Default to WARNING for test heuristic failures
-        return RuleSeverity.WARNING
-    
-    def status_from_severity(self, severity: RuleSeverity):
-        """Convert severity to appropriate status (FAIL for ERROR, WARN for WARNING)."""
-        from rules.result import RuleStatus
-        if severity == RuleSeverity.ERROR:
-            return RuleStatus.FAIL
-        else:
-            return RuleStatus.WARN
     
     def _scan_workflows_for_tests(self) -> dict:
         """

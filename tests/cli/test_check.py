@@ -78,7 +78,8 @@ def test_check_command_success(mock_load_config, mock_analyzer, mock_checker, tm
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -167,7 +168,8 @@ def test_check_command_with_clean(mock_load_config, mock_analyzer, mock_checker,
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -263,7 +265,8 @@ def test_check_command_cli_args_passed(mock_load_config, mock_analyzer, mock_che
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
