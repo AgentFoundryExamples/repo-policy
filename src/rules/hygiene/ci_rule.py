@@ -12,7 +12,7 @@ class CiRule(BaseRule):
     """Verify CI workflow presence and test execution."""
     
     rule_id = "ci-required"
-    default_severity = RuleSeverity.ERROR
+    default_severity = RuleSeverity.WARNING  # Heuristic check, default to warning
     rule_tags = ["hygiene", "ci", "testing"]
     
     # Test command patterns to search for in CI workflows
@@ -66,15 +66,10 @@ class CiRule(BaseRule):
         
         # Check if tests are detected
         if not test_info["has_test_commands"]:
-            # This is a warning when tests aren't detected (heuristic check)
-            # Default to WARNING severity, but can be overridden via rules.severity_overrides
-            from rules.result import RuleStatus
-            
-            return RuleResult(
-                rule_id=self.rule_id,
-                severity=RuleSeverity.WARNING,  # Always WARNING for heuristic failures
-                status=RuleStatus.WARN,
-                message=f"CI workflows found but no test commands detected (heuristic check)",
+            # This is a failure if tests aren't detected (heuristic check).
+            # The severity can be overridden via rules.severity_overrides in config.
+            return self._create_fail_result(
+                message="CI workflows found but no test commands detected (heuristic check)",
                 evidence={
                     "has_ci": True,
                     "workflow_files": [str(f) for f in self.facts.ci_workflow_files],
@@ -91,7 +86,6 @@ class CiRule(BaseRule):
                     "If tests are running but not detected, this is a heuristic warning "
                     "that can be safely ignored or the rule can be excluded."
                 ),
-                rule_tags=self.rule_tags,
             )
         
         return self._create_pass_result(

@@ -101,13 +101,9 @@ class ReadmeRule(BaseRule):
         missing = []
         
         for section in required_sections:
-            # Try to find section as markdown heading
-            # Match: # Section, ## Section, ### Section, etc.
+            # Try to find section as a markdown heading (e.g., # Section, ## Section)
             pattern = rf'^#+\s+{re.escape(section.lower())}'
             if not re.search(pattern, content, re.MULTILINE):
-                # Also try without hash (plain text heading)
-                pattern = rf'^{re.escape(section.lower())}\s*$'
-                if not re.search(pattern, content, re.MULTILINE):
-                    missing.append(section)
+                missing.append(section)
         
         return missing
