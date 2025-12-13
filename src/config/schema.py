@@ -88,7 +88,9 @@ class RuleConfig(BaseModel):
                         f"Valid values: {', '.join(valid_values)}"
                     )
             else:
-                result[rule] = severity
+                raise TypeError(
+                    f"Severity for rule '{rule}' must be a string, not {type(severity).__name__}"
+                )
         return result
 
 
@@ -183,7 +185,7 @@ class Config(BaseModel):
                 raise ValueError(
                     f"Invalid preset '{v}'. Valid values: {', '.join(valid_values)}"
                 )
-        return v
+        raise TypeError(f"Preset must be a string, not {type(v).__name__}")
 
     def model_post_init(self, __context):
         """Post-initialization validation."""

@@ -13,23 +13,29 @@ from .schema import Config
 logger = logging.getLogger(__name__)
 
 
-def find_config_file(search_path: Optional[str] = None) -> Optional[Path]:
+def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> Optional[Path]:
     """
     Find the config file by searching up from the target path.
     
     Args:
         search_path: Starting path for search (defaults to current directory)
+        max_depth: Maximum number of directories to traverse upward (default: 50)
         
     Returns:
         Path to config file if found, None otherwise
     """
-    if search_path:
-        current = Path(search_path).resolve()
-    else:
-        current = Path.cwd()
+    try:
+        if search_path:
+            current = Path(search_path).resolve()
+        else:
+            current = Path.cwd()
+    except (OSError, RuntimeError) as e:
+        logger.warning(f"Error resolving search path: {e}")
+        return None
     
-    # Search up to repository root
-    while True:
+    # Search up to repository root with depth limit
+    depth = 0
+    while depth < max_depth:
         config_candidates = [
             current / "repo-policy.yml",
             current / "repo-policy.yaml",
@@ -38,14 +44,23 @@ def find_config_file(search_path: Optional[str] = None) -> Optional[Path]:
         ]
         
         for candidate in config_candidates:
-            if candidate.exists():
-                return candidate
+            try:
+                if candidate.exists():
+                    return candidate
+            except (OSError, PermissionError) as e:
+                logger.debug(f"Cannot access {candidate}: {e}")
+                continue
         
-        # Check if we're at the repository root
-        if (current / ".git").exists() or current == current.parent:
+        # Check if we're at the repository root or filesystem root
+        try:
+            if (current / ".git").exists() or current == current.parent:
+                break
+        except (OSError, PermissionError):
+            # Cannot check for .git directory, likely at or near root
             break
             
         current = current.parent
+        depth += 1
     
     return None
 

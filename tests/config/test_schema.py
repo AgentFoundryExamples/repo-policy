@@ -82,6 +82,19 @@ def test_rule_config_severity_overrides_invalid():
     assert "Invalid severity 'invalid-severity'" in error_msg
 
 
+def test_rule_config_severity_overrides_non_string():
+    """Test non-string severity override raises error."""
+    with pytest.raises((ValidationError, TypeError)) as exc_info:
+        RuleConfig(
+            severity_overrides={
+                "my-rule": 123,
+            }
+        )
+    
+    error_msg = str(exc_info.value)
+    assert "must be a string" in error_msg or "Severity for rule" in error_msg
+
+
 def test_license_config_defaults():
     """Test LicenseConfig defaults."""
     license_cfg = LicenseConfig()
@@ -132,6 +145,15 @@ def test_config_preset_validation():
     
     error_msg = str(exc_info.value)
     assert "Invalid preset 'invalid-preset'" in error_msg
+
+
+def test_config_preset_validation_non_string():
+    """Test non-string preset raises error."""
+    with pytest.raises((ValidationError, TypeError)) as exc_info:
+        Config(preset=123)
+    
+    error_msg = str(exc_info.value)
+    assert "must be a string" in error_msg or "Preset must be" in error_msg
 
 
 def test_config_repo_tags():

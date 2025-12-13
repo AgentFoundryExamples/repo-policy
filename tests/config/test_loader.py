@@ -164,6 +164,27 @@ def test_find_config_file_alternative_names(tmp_path):
     assert found == config_file
 
 
+def test_find_config_file_max_depth(tmp_path):
+    """Test that config search respects max_depth parameter."""
+    # Create a deep directory structure
+    deep_path = tmp_path
+    for i in range(10):
+        deep_path = deep_path / f"level{i}"
+    deep_path.mkdir(parents=True)
+    
+    # Put config at the root
+    config_file = tmp_path / "repo-policy.yml"
+    config_file.write_text("target_path: .")
+    
+    # Should find with sufficient depth
+    found = find_config_file(str(deep_path), max_depth=20)
+    assert found == config_file
+    
+    # Should not find with insufficient depth
+    found = find_config_file(str(deep_path), max_depth=5)
+    assert found is None
+
+
 def test_load_config_with_file(tmp_path):
     """Test loading config from explicit file path."""
     config_file = tmp_path / "custom-config.yml"
