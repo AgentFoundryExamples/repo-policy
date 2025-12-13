@@ -35,7 +35,8 @@
         "stdlib": [
           "argparse",
           "logging",
-          "pathlib.Path"
+          "pathlib.Path",
+          "shutil"
         ],
         "third-party": []
       }
@@ -115,6 +116,72 @@
           "pydantic.Field",
           "pydantic.field_validator"
         ]
+      }
+    },
+    {
+      "id": "src/integration/__init__.py",
+      "path": "src/integration/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/integration/context.py",
+      "path": "src/integration/context.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "typing.Any",
+          "typing.Dict",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/integration/license_headers.py",
+      "path": "src/integration/license_headers.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "json",
+          "logging",
+          "pathlib.Path",
+          "shutil",
+          "subprocess",
+          "typing.Any",
+          "typing.Dict",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/integration/repo_analyzer.py",
+      "path": "src/integration/repo_analyzer.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "dataclasses.dataclass",
+          "dataclasses.field",
+          "logging",
+          "pathlib.Path",
+          "shutil",
+          "subprocess",
+          "tempfile",
+          "typing.Any",
+          "typing.Dict",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
       }
     },
     {
@@ -219,12 +286,77 @@
           "pytest"
         ]
       }
+    },
+    {
+      "id": "tests/integration/__init__.py",
+      "path": "tests/integration/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/integration/test_context.py",
+      "path": "tests/integration/test_context.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/integration/test_license_headers.py",
+      "path": "tests/integration/test_license_headers.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "json",
+          "pathlib.Path",
+          "subprocess",
+          "unittest.mock.MagicMock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/integration/test_repo_analyzer.py",
+      "path": "tests/integration/test_repo_analyzer.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "pathlib.Path",
+          "subprocess",
+          "unittest.mock.MagicMock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
     }
   ],
   "edges": [
     {
       "source": "src/cli/commands/check.py",
       "target": "src/config/loader.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/integration/context.py"
     },
     {
       "source": "src/cli/commands/init.py",
@@ -245,6 +377,14 @@
     {
       "source": "src/cli/main.py",
       "target": "src/cli/commands/init.py"
+    },
+    {
+      "source": "src/integration/context.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "src/integration/context.py",
+      "target": "src/integration/license_headers.py"
     },
     {
       "source": "tests/cli/test_check.py",
@@ -273,16 +413,41 @@
     {
       "source": "tests/config/test_schema.py",
       "target": "src/config/schema.py"
+    },
+    {
+      "source": "tests/integration/test_context.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "tests/integration/test_context.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "tests/integration/test_context.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "tests/integration/test_license_headers.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "tests/integration/test_repo_analyzer.py",
+      "target": "src/integration/repo_analyzer.py"
     }
   ],
   "external_dependencies_summary": {
     "stdlib": [
       "argparse",
       "argparse.Namespace",
+      "dataclasses.dataclass",
+      "dataclasses.field",
       "enum.Enum",
+      "json",
       "logging",
       "os",
       "pathlib.Path",
+      "shutil",
+      "subprocess",
       "sys",
       "tempfile",
       "typing.Any",
@@ -300,7 +465,7 @@
       "pytest",
       "yaml"
     ],
-    "stdlib_count": 14,
+    "stdlib_count": 19,
     "third-party_count": 6
   }
 }

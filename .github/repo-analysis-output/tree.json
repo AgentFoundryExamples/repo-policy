@@ -38,6 +38,14 @@
             },
             {
               "type": "file",
+              "name": "file-summaries.json"
+            },
+            {
+              "type": "file",
+              "name": "file-summaries.md"
+            },
+            {
+              "type": "file",
               "name": "SUMMARY.md"
             },
             {
@@ -59,6 +67,20 @@
               "name": "af_maintenance.yml"
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "docs",
+      "children": [
+        {
+          "type": "file",
+          "name": "LICENSE_HEADER.md"
+        },
+        {
+          "type": "file",
+          "name": "REPO_ANALYSIS.md"
         }
       ]
     },
@@ -117,6 +139,28 @@
           ]
         },
         {
+          "type": "directory",
+          "name": "integration",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "context.py"
+            },
+            {
+              "type": "file",
+              "name": "license_headers.py"
+            },
+            {
+              "type": "file",
+              "name": "repo_analyzer.py"
+            }
+          ]
+        },
+        {
           "type": "file",
           "name": "__init__.py"
         }
@@ -163,6 +207,28 @@
             {
               "type": "file",
               "name": "test_schema.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "integration",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "test_context.py"
+            },
+            {
+              "type": "file",
+              "name": "test_license_headers.py"
+            },
+            {
+              "type": "file",
+              "name": "test_repo_analyzer.py"
             }
           ]
         },

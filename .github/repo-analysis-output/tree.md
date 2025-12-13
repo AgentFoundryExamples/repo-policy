@@ -8,11 +8,16 @@
   ├── repo-analysis-output
     ├── dependencies.json
     ├── dependencies.md
+    ├── file-summaries.json
+    ├── file-summaries.md
     ├── SUMMARY.md
     ├── tree.json
     └── tree.md
   └── workflows
     └── af_maintenance.yml
+├── docs
+  ├── LICENSE_HEADER.md
+  └── REPO_ANALYSIS.md
 ├── src
   ├── cli
     ├── commands
@@ -25,6 +30,11 @@
     ├── __init__.py
     ├── loader.py
     └── schema.py
+  ├── integration
+    ├── __init__.py
+    ├── context.py
+    ├── license_headers.py
+    └── repo_analyzer.py
   └── __init__.py
 ├── tests
   ├── cli
@@ -36,6 +46,11 @@
     ├── __init__.py
     ├── test_loader.py
     └── test_schema.py
+  ├── integration
+    ├── __init__.py
+    ├── test_context.py
+    ├── test_license_headers.py
+    └── test_repo_analyzer.py
   └── __init__.py
 ├── .gitignore
 ├── LICENSE
