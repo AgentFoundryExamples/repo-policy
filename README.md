@@ -10,6 +10,8 @@ A deterministic repository policy enforcement tool with configurable rules and i
 - **License management**: SPDX ID tracking and header requirements
 - **Preset configurations**: Baseline, standard, and strict presets
 - **Structured logging**: Clear output with exit code handling
+- **External tool integration**: Repo analyzer and license header checking
+- **Deterministic artifact handling**: Clean, keep, or purge outputs
 
 ## Installation
 
@@ -149,6 +151,22 @@ Type checking:
 ```bash
 mypy src
 ```
+
+## Integration Guides
+
+- **[Repository Analysis Integration](docs/REPO_ANALYSIS.md)**: Learn how to integrate with the repo analyzer tool for metadata extraction
+- **[License Header Integration](docs/LICENSE_HEADER.md)**: Learn how to check license headers in source files
+
+## Architecture
+
+The repo-policy tool is designed with a modular architecture:
+
+- **CLI Layer** (`src/cli/`): Command-line interface and argument parsing
+- **Configuration** (`src/config/`): Schema validation and config loading
+- **Integration** (`src/integration/`): External tool integrations (repo analyzer, license headers)
+- **Context** (`src/integration/context.py`): Policy context for storing integration results
+
+Integration results are captured deterministically and made available to downstream rules for policy evaluation.
 
 
 
