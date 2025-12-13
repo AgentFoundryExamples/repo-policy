@@ -17,7 +17,8 @@
     └── af_maintenance.yml
 ├── docs
   ├── LICENSE_HEADER.md
-  └── REPO_ANALYSIS.md
+  ├── REPO_ANALYSIS.md
+  └── report-format.md
 ├── src
   ├── cli
     ├── commands
@@ -38,6 +39,11 @@
     ├── context.py
     ├── license_headers.py
     └── repo_analyzer.py
+  ├── reporting
+    ├── __init__.py
+    ├── json_generator.py
+    ├── markdown_generator.py
+    └── metadata.py
   ├── rules
     ├── docs
       ├── __init__.py
@@ -82,6 +88,11 @@
     ├── test_context.py
     ├── test_license_headers.py
     └── test_repo_analyzer.py
+  ├── reporting
+    ├── __init__.py
+    ├── test_json_generator.py
+    ├── test_markdown_generator.py
+    └── test_metadata.py
   └── __init__.py
 ├── .gitignore
 ├── LICENSE

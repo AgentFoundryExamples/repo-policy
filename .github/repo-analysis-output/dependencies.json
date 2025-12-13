@@ -214,6 +214,68 @@
       }
     },
     {
+      "id": "src/reporting/__init__.py",
+      "path": "src/reporting/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/reporting/json_generator.py",
+      "path": "src/reporting/json_generator.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "datetime.datetime",
+          "datetime.timezone",
+          "json",
+          "logging",
+          "pathlib.Path",
+          "typing.Any",
+          "typing.Dict",
+          "typing.List"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/reporting/markdown_generator.py",
+      "path": "src/reporting/markdown_generator.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "datetime.datetime",
+          "datetime.timezone",
+          "logging",
+          "pathlib.Path",
+          "typing.Any",
+          "typing.Dict",
+          "typing.List"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/reporting/metadata.py",
+      "path": "src/reporting/metadata.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "hashlib",
+          "logging",
+          "pathlib.Path",
+          "shutil",
+          "subprocess",
+          "typing.Any",
+          "typing.Dict",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
       "id": "src/rules/__init__.py",
       "path": "src/rules/__init__.py",
       "type": "file",
@@ -605,6 +667,65 @@
           "pytest"
         ]
       }
+    },
+    {
+      "id": "tests/reporting/__init__.py",
+      "path": "tests/reporting/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/reporting/test_json_generator.py",
+      "path": "tests/reporting/test_json_generator.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "json",
+          "pathlib.Path",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/reporting/test_markdown_generator.py",
+      "path": "tests/reporting/test_markdown_generator.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "datetime.datetime",
+          "datetime.timezone",
+          "pathlib.Path",
+          "unittest.mock.Mock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/reporting/test_metadata.py",
+      "path": "tests/reporting/test_metadata.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "pathlib.Path",
+          "subprocess.CalledProcessError",
+          "subprocess.TimeoutExpired",
+          "tempfile",
+          "unittest.mock.Mock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
     }
   ],
   "edges": [
@@ -643,6 +764,10 @@
     {
       "source": "src/cli/commands/check.py",
       "target": "src/rules/tests/__init__.py"
+    },
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/reporting/__init__.py"
     },
     {
       "source": "src/cli/commands/init.py",
@@ -687,6 +812,42 @@
     {
       "source": "src/integration/context.py",
       "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "src/reporting/__init__.py",
+      "target": "src/reporting/json_generator.py"
+    },
+    {
+      "source": "src/reporting/__init__.py",
+      "target": "src/reporting/markdown_generator.py"
+    },
+    {
+      "source": "src/reporting/json_generator.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "src/reporting/json_generator.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "src/reporting/json_generator.py",
+      "target": "src/reporting/metadata.py"
+    },
+    {
+      "source": "src/reporting/markdown_generator.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "src/reporting/markdown_generator.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "src/reporting/markdown_generator.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "src/reporting/markdown_generator.py",
+      "target": "src/reporting/metadata.py"
     },
     {
       "source": "src/rules/__init__.py",
@@ -903,6 +1064,70 @@
     {
       "source": "tests/integration/test_repo_analyzer.py",
       "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/reporting/json_generator.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "tests/reporting/test_json_generator.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/reporting/markdown_generator.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/rules/engine.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/rules/result.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/integration/context.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "tests/reporting/test_markdown_generator.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "tests/reporting/test_metadata.py",
+      "target": "src/reporting/metadata.py"
+    },
+    {
+      "source": "tests/reporting/test_metadata.py",
+      "target": "src/integration/repo_analyzer.py"
+    },
+    {
+      "source": "tests/reporting/test_metadata.py",
+      "target": "src/integration/license_headers.py"
+    },
+    {
+      "source": "tests/reporting/test_metadata.py",
+      "target": "src/integration/context.py"
     }
   ],
   "external_dependencies_summary": {
@@ -913,8 +1138,11 @@
       "argparse.Namespace",
       "dataclasses.dataclass",
       "dataclasses.field",
+      "datetime.datetime",
+      "datetime.timezone",
       "enum.Enum",
       "fnmatch",
+      "hashlib",
       "json",
       "logging",
       "logging.getLogger",
@@ -923,6 +1151,8 @@
       "re",
       "shutil",
       "subprocess",
+      "subprocess.CalledProcessError",
+      "subprocess.TimeoutExpired",
       "sys",
       "tempfile",
       "typing.Any",
@@ -932,6 +1162,7 @@
       "typing.Set",
       "typing.Type",
       "unittest.mock.MagicMock",
+      "unittest.mock.Mock",
       "unittest.mock.patch"
     ],
     "third-party": [
@@ -942,7 +1173,7 @@
       "pytest",
       "yaml"
     ],
-    "stdlib_count": 26,
+    "stdlib_count": 32,
     "third-party_count": 6
   }
 }

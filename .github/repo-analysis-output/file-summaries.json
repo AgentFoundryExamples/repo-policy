@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "total_files": 48,
+  "total_files": 56,
   "files": [
     {
       "schema_version": "2.0",
@@ -53,8 +53,8 @@
       "summary": "Python core implementation",
       "summary_text": "Python core implementation",
       "metrics": {
-        "size_bytes": 8569,
-        "loc": 170,
+        "size_bytes": 10243,
+        "loc": 204,
         "todo_count": 0
       }
     },
@@ -209,6 +209,62 @@
       "metrics": {
         "size_bytes": 12416,
         "loc": 310,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/reporting/__init__.py",
+      "language": "Python",
+      "role": "module-init",
+      "role_justification": "module initialization file '__init__'",
+      "summary": "Python module initialization (role: module-init)",
+      "summary_text": "Python module initialization (role: module-init)",
+      "metrics": {
+        "size_bytes": 816,
+        "loc": 4,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/reporting/json_generator.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 4949,
+        "loc": 101,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/reporting/markdown_generator.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 10492,
+        "loc": 189,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/reporting/metadata.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 3960,
+        "loc": 92,
         "todo_count": 0
       }
     },
@@ -671,6 +727,62 @@
       "metrics": {
         "size_bytes": 14435,
         "loc": 322,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/reporting/__init__.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "located in 'tests' directory",
+      "summary": "Python test module initialization (role: test)",
+      "summary_text": "Python test module initialization (role: test)",
+      "metrics": {
+        "size_bytes": 612,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/reporting/test_json_generator.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 12868,
+        "loc": 298,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/reporting/test_markdown_generator.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 16579,
+        "loc": 393,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/reporting/test_metadata.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 8544,
+        "loc": 156,
         "todo_count": 0
       }
     }

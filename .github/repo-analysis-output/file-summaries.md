@@ -4,7 +4,7 @@ Heuristic summaries of source files based on filenames, extensions, and paths.
 
 Schema Version: 2.0
 
-Total files: 48
+Total files: 56
 
 ## src/__init__.py
 **Language:** Python  
@@ -38,8 +38,8 @@ Total files: 48
 **Role:** implementation  
 **Role Justification:** general implementation file (default classification)  
 **Summary:** Python core implementation  
-**Size:** 8.37 KB  
-**LOC:** 170  
+**Size:** 10.00 KB  
+**LOC:** 204  
 **TODOs/FIXMEs:** 0  
 
 ## src/cli/commands/init.py
@@ -139,6 +139,42 @@ Total files: 48
 **Summary:** Python core implementation  
 **Size:** 12.12 KB  
 **LOC:** 310  
+**TODOs/FIXMEs:** 0  
+
+## src/reporting/__init__.py
+**Language:** Python  
+**Role:** module-init  
+**Role Justification:** module initialization file '__init__'  
+**Summary:** Python module initialization (role: module-init)  
+**Size:** 0.80 KB  
+**LOC:** 4  
+**TODOs/FIXMEs:** 0  
+
+## src/reporting/json_generator.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 4.83 KB  
+**LOC:** 101  
+**TODOs/FIXMEs:** 0  
+
+## src/reporting/markdown_generator.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 10.25 KB  
+**LOC:** 189  
+**TODOs/FIXMEs:** 0  
+
+## src/reporting/metadata.py
+**Language:** Python  
+**Role:** implementation  
+**Role Justification:** general implementation file (default classification)  
+**Summary:** Python core implementation  
+**Size:** 3.87 KB  
+**LOC:** 92  
 **TODOs/FIXMEs:** 0  
 
 ## src/rules/__init__.py
@@ -436,4 +472,40 @@ Total files: 48
 **Summary:** Python test file (role: test)  
 **Size:** 14.10 KB  
 **LOC:** 322  
+**TODOs/FIXMEs:** 0  
+
+## tests/reporting/__init__.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** located in 'tests' directory  
+**Summary:** Python test module initialization (role: test)  
+**Size:** 0.60 KB  
+**LOC:** 1  
+**TODOs/FIXMEs:** 0  
+
+## tests/reporting/test_json_generator.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** filename starts with 'test_'  
+**Summary:** Python test file (role: test)  
+**Size:** 12.57 KB  
+**LOC:** 298  
+**TODOs/FIXMEs:** 0  
+
+## tests/reporting/test_markdown_generator.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** filename starts with 'test_'  
+**Summary:** Python test file (role: test)  
+**Size:** 16.19 KB  
+**LOC:** 393  
+**TODOs/FIXMEs:** 0  
+
+## tests/reporting/test_metadata.py
+**Language:** Python  
+**Role:** test  
+**Role Justification:** filename starts with 'test_'  
+**Summary:** Python test file (role: test)  
+**Size:** 8.34 KB  
+**LOC:** 156  
 **TODOs/FIXMEs:** 0  
