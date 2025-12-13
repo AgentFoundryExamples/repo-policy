@@ -200,15 +200,20 @@ class TestLicenseHeaderChecker:
                 outdir=tmp_path / "output",
                 spdx_id="Apache-2.0",
                 header_template_path="LICENSE_HEADER",
-                include_globs=["**/*.py", "**/*.js"],
+                include_globs=["**/*.py", "**/*.js", "**/*.ts"],
                 keep_artifacts=False,
             )
 
         assert result.success
         # Should have include-extension flags
         assert "--include-extension" in result.command
+        # Check that extensions are correctly extracted
         assert ".py" in result.command
         assert ".js" in result.command
+        assert ".ts" in result.command
+        # Count occurrences - should have 3 --include-extension flags
+        include_count = result.command.count("--include-extension")
+        assert include_count == 3
 
     @patch("integration.license_headers.subprocess.run")
     def test_check_with_exclude_globs(self, mock_run, tmp_path):

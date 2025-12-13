@@ -143,11 +143,16 @@ def check_command(args: argparse.Namespace) -> int:
             )
     elif not config.license.require_header:
         logger.info("License header enforcement disabled (require_header: false)")
-        context.license_header_result = type(
-            "SkippedResult",
-            (),
-            {"skipped": True, "error_message": None, "success": True},
-        )()
+        # Create a skipped result
+        from integration.license_headers import LicenseHeaderResult
+
+        context.license_header_result = LicenseHeaderResult(
+            success=True,
+            exit_code=0,
+            stdout="",
+            stderr="",
+            skipped=True,
+        )
     else:
         logger.info("License header integration disabled")
 

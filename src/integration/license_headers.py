@@ -188,8 +188,11 @@ class LicenseHeaderChecker:
         if include_globs:
             for glob in include_globs:
                 # Convert glob to extension format expected by license-header tool
-                if glob.startswith("**/*"):
-                    ext = glob[4:]  # Extract extension like .py from **/*.py
+                if glob.startswith("**/"):
+                    # Extract extension like .py from **/*.py
+                    ext = glob[3:]  # Skip "**/" to get "*.py"
+                    if ext.startswith("*"):
+                        ext = ext[1:]  # Skip "*" to get ".py"
                     cmd.extend(["--include-extension", ext])
 
         # Add exclude paths if specified
