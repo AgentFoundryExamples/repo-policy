@@ -480,8 +480,15 @@ class TestGenerateMarkdownReport:
         
         context = PolicyContext()
         
+        from datetime import datetime, timezone
+        from unittest.mock import Mock
+        
         with patch("reporting.markdown_generator.datetime") as mock_dt:
-            mock_dt.utcnow.return_value.strftime.return_value = "2025-01-01 00:00:00"
+            # Mock datetime.now(timezone.utc).strftime()
+            mock_now = Mock()
+            mock_now.strftime.return_value = "2025-01-01 00:00:00"
+            mock_dt.now.return_value = mock_now
+            mock_dt.timezone = timezone
             
             generate_markdown_report(
                 rule_results=engine_result,
