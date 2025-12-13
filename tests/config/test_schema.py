@@ -92,7 +92,7 @@ def test_rule_config_severity_overrides_non_string():
         )
     
     error_msg = str(exc_info.value)
-    assert "must be a string" in error_msg or "Severity for rule" in error_msg
+    assert "must be a string" in error_msg
 
 
 def test_license_config_defaults():

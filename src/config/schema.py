@@ -89,7 +89,7 @@ class RuleConfig(BaseModel):
                     )
             else:
                 raise TypeError(
-                    f"Severity for rule '{rule}' must be a string, not {type(severity).__name__}"
+                    f"Severity must be a string, not {type(severity).__name__}"
                 )
         return result
 
