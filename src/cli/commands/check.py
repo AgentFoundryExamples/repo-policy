@@ -15,9 +15,13 @@
 
 import logging
 import argparse
+import shutil
 from pathlib import Path
 
 from config.loader import load_config
+from integration.repo_analyzer import RepoAnalyzerRunner
+from integration.license_headers import LicenseHeaderChecker
+from integration.context import PolicyContext
 
 logger = logging.getLogger(__name__)
 
@@ -64,13 +68,88 @@ def check_command(args: argparse.Namespace) -> int:
         outdir = Path(config.outdir)
         if outdir.exists():
             logger.info(f"Cleaning output directory: {outdir}")
-            # Stub: actual cleanup would be implemented here
-            logger.debug("Clean operation stub - not yet implemented")
+            # Remove only contents, not the directory itself
+            for item in outdir.iterdir():
+                if item.is_dir():
+                    shutil.rmtree(item, ignore_errors=True)
+                else:
+                    item.unlink(missing_ok=True)
+            logger.debug(f"Cleaned {outdir}")
     
     # Create output directory
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     logger.info(f"Output directory ready: {outdir}")
+    
+    # Initialize policy context
+    context = PolicyContext()
+    
+    # Run repo analyzer integration
+    if config.integration.enable_repo_analyzer:
+        logger.info("Running repo analyzer integration...")
+        analyzer = RepoAnalyzerRunner(
+            analyzer_binary=config.integration.repo_analyzer_binary,
+            workspace_mode=config.integration.repo_analyzer_workspace_mode,
+        )
+        
+        analyzer_result = analyzer.run(
+            target_path=target_path,
+            outdir=outdir,
+            keep_artifacts=config.keep_artifacts,
+        )
+        
+        context.analyzer_result = analyzer_result
+        
+        if analyzer_result.success:
+            logger.info("Repo analyzer completed successfully")
+            if analyzer_result.output_files:
+                logger.debug(f"Analyzer outputs: {analyzer_result.output_files}")
+        elif analyzer_result.error_message:
+            logger.warning(f"Repo analyzer failed: {analyzer_result.error_message}")
+        else:
+            logger.warning("Repo analyzer failed")
+    else:
+        logger.info("Repo analyzer integration disabled")
+    
+    # Run license header integration
+    if config.integration.enable_license_headers and config.license.require_header:
+        logger.info("Running license header check...")
+        checker = LicenseHeaderChecker(
+            binary_path=config.integration.license_header_binary,
+        )
+        
+        header_result = checker.check(
+            target_path=target_path,
+            outdir=outdir,
+            spdx_id=config.license.spdx_id,
+            header_template_path=config.license.header_template_path,
+            include_globs=config.license.include_globs,
+            exclude_globs=config.license.exclude_globs,
+            keep_artifacts=config.keep_artifacts,
+        )
+        
+        context.license_header_result = header_result
+        
+        if header_result.success:
+            logger.info("License header check passed")
+            if header_result.summary:
+                logger.info(f"Summary: {header_result.summary}")
+        elif header_result.error_message:
+            logger.warning(f"License header check failed: {header_result.error_message}")
+        else:
+            logger.warning(
+                f"License header check found {len(header_result.non_compliant_files)} "
+                f"non-compliant files"
+            )
+    elif not config.license.require_header:
+        logger.info("License header enforcement disabled (require_header: false)")
+        context.license_header_result = type(
+            "SkippedResult",
+            (),
+            {"skipped": True, "error_message": None, "success": True},
+        )()
+    else:
+        logger.info("License header integration disabled")
     
     # Show advice if requested
     if config.advice:
@@ -78,19 +157,38 @@ def check_command(args: argparse.Namespace) -> int:
         # Stub: advice logic would be implemented here
     
     # Run policy checks (stub)
-    logger.info("Running policy checks (stub)")
+    logger.info("Running policy checks")
     logger.debug(f"Rules to include: {config.rules.include}")
     logger.debug(f"Rules to exclude: {config.rules.exclude}")
     logger.debug(f"Severity overrides: {config.rules.severity_overrides}")
     
-    # Stub: This is where rule execution would happen
-    # For now, we just log the configuration
+    # Log integration context
     logger.info(f"License SPDX ID: {config.license.spdx_id or 'not set'}")
     logger.info(f"Require headers: {config.license.require_header}")
     logger.info(f"Repository tags: {config.repo_tags}")
     
-    # Stub: Collect results
-    has_errors = False  # This would be determined by actual rule execution
+    # Store context metadata
+    context.metadata["config"] = {
+        "target_path": str(target_path),
+        "outdir": str(outdir),
+        "license_spdx_id": config.license.spdx_id,
+        "require_header": config.license.require_header,
+        "repo_tags": config.repo_tags,
+    }
+    
+    # Determine if there are errors
+    has_errors = False
+    
+    # Check if license headers failed
+    if (
+        context.license_header_result
+        and not context.license_header_result.skipped
+        and not context.license_header_result.success
+    ):
+        has_errors = True
+    
+    # Log final context
+    logger.debug(f"Policy context: {context.to_dict()}")
     
     # Report results
     if has_errors:
