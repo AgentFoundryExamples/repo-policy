@@ -398,7 +398,7 @@ cat .repo-policy-output/license-headers/license-header-check-report.json
 ### Test Tool Directly
 
 ```bash
-license-header --path check . --header LICENSE_HEADER
+license-header check --path . --header LICENSE_HEADER
 ```
 
 ### Common Issues
