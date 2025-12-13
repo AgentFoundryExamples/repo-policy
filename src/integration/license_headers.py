@@ -188,12 +188,24 @@ class LicenseHeaderChecker:
         if include_globs:
             for glob in include_globs:
                 # Convert glob to extension format expected by license-header tool
+                # Validate basic pattern structure
+                if not isinstance(glob, str) or not glob.strip():
+                    logger.warning(f"Invalid glob pattern (empty or non-string): {glob!r}")
+                    continue
+
                 if glob.startswith("**/"):
                     # Extract extension like .py from **/*.py
                     ext = glob[3:]  # Skip "**/" to get "*.py"
                     if ext.startswith("*"):
                         ext = ext[1:]  # Skip "*" to get ".py"
-                    cmd.extend(["--include-extension", ext])
+
+                    # Validate that we got a valid extension
+                    if ext and ext.startswith("."):
+                        cmd.extend(["--include-extension", ext])
+                    else:
+                        logger.warning(
+                            f"Could not extract valid extension from glob pattern: {glob}"
+                        )
 
         # Add exclude paths if specified
         if exclude_globs:

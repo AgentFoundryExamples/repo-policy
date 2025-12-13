@@ -365,3 +365,44 @@ class TestAnalyzerResult:
         assert result.command == []
         assert result.output_files == {}
         assert result.error_message is None
+
+    @patch("integration.repo_analyzer.subprocess.run")
+    @patch("integration.repo_analyzer.shutil.rmtree")
+    @patch("integration.repo_analyzer.tempfile.mkdtemp")
+    def test_run_temp_workspace_cleanup_failure(
+        self, mock_mkdtemp, mock_rmtree, mock_run, tmp_path
+    ):
+        """Test temp workspace mode when cleanup fails (logs warning)."""
+        target = tmp_path / "repo"
+        target.mkdir()
+        outdir = tmp_path / "output"
+
+        temp_dir = tmp_path / "temp"
+        temp_dir.mkdir()
+        mock_mkdtemp.return_value = str(temp_dir)
+
+        # Mock git clone and analyzer run
+        mock_run.side_effect = [
+            MagicMock(returncode=0, stdout="", stderr=""),  # git clone
+            MagicMock(returncode=0, stdout="Analysis done", stderr=""),  # analyzer
+        ]
+
+        # Mock cleanup failure
+        mock_rmtree.side_effect = OSError("Permission denied")
+
+        runner = RepoAnalyzerRunner(
+            analyzer_binary="/usr/bin/repo-analyzer",
+            workspace_mode="temp_workspace",
+        )
+
+        with patch.object(runner, "_get_version", return_value="1.0.0"):
+            result = runner.run(
+                target_path=target,
+                outdir=outdir,
+                keep_artifacts=False,
+            )
+
+        # Should still succeed even if cleanup fails
+        assert result.success
+        # Cleanup should have been attempted
+        mock_rmtree.assert_called()

@@ -442,3 +442,35 @@ class TestLicenseHeaderResult:
 
         assert result.success
         assert result.skipped
+
+    @patch("integration.license_headers.subprocess.run")
+    def test_check_with_invalid_globs(self, mock_run, tmp_path):
+        """Test check with invalid glob patterns."""
+        target = tmp_path / "repo"
+        target.mkdir()
+        (target / "LICENSE_HEADER").write_text("Copyright 2025")
+
+        mock_run.return_value = MagicMock(
+            returncode=0,
+            stdout="Check complete",
+            stderr="",
+        )
+
+        checker = LicenseHeaderChecker(binary_path="/usr/bin/license-header")
+
+        with patch.object(checker, "_get_version", return_value="2.0.0"):
+            result = checker.check(
+                target_path=target,
+                outdir=tmp_path / "output",
+                spdx_id="Apache-2.0",
+                header_template_path="LICENSE_HEADER",
+                include_globs=["**/*.py", "", None, "invalid", "**/*.js"],
+                keep_artifacts=False,
+            )
+
+        assert result.success
+        # Should only include valid patterns
+        assert "--include-extension" in result.command
+        assert ".py" in result.command
+        assert ".js" in result.command
+        # Invalid patterns should be skipped (no extension extracted)

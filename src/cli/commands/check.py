@@ -69,12 +69,19 @@ def check_command(args: argparse.Namespace) -> int:
         if outdir.exists():
             logger.info(f"Cleaning output directory: {outdir}")
             # Remove only contents, not the directory itself
-            for item in outdir.iterdir():
-                if item.is_dir():
-                    shutil.rmtree(item, ignore_errors=True)
-                else:
-                    item.unlink(missing_ok=True)
-            logger.debug(f"Cleaned {outdir}")
+            try:
+                for item in outdir.iterdir():
+                    try:
+                        if item.is_dir():
+                            shutil.rmtree(item)
+                        else:
+                            item.unlink()
+                    except OSError as e:
+                        logger.warning(f"Failed to remove {item}: {e}")
+                logger.debug(f"Cleaned {outdir}")
+            except OSError as e:
+                logger.error(f"Error cleaning output directory {outdir}: {e}")
+                return 1
 
     # Create output directory
     outdir = Path(config.outdir)

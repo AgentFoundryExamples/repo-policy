@@ -288,3 +288,162 @@ def test_check_command_cli_args_passed(mock_load_config, mock_analyzer, mock_che
     assert cli_args["keep_artifacts"] is True
     assert cli_args["clean"] is True
     assert cli_args["advice"] is True
+
+
+@patch("cli.commands.check.LicenseHeaderChecker")
+@patch("cli.commands.check.RepoAnalyzerRunner")
+@patch("cli.commands.check.load_config")
+def test_check_command_analyzer_failure(mock_load_config, mock_analyzer, mock_checker, tmp_path):
+    """Test check command when repo analyzer fails."""
+    target_path = tmp_path / "repo"
+    target_path.mkdir()
+
+    mock_config = MagicMock()
+    mock_config.target_path = str(target_path)
+    mock_config.outdir = str(tmp_path / "output")
+    mock_config.clean = False
+    mock_config.advice = False
+    mock_config.keep_artifacts = False
+    mock_config.rules.include = ["*"]
+    mock_config.rules.exclude = []
+    mock_config.rules.severity_overrides = {}
+    mock_config.license.spdx_id = "Apache-2.0"
+    mock_config.license.require_header = False
+    mock_config.repo_tags = {}
+    mock_config.integration.enable_repo_analyzer = True
+    mock_config.integration.enable_license_headers = False
+
+    mock_load_config.return_value = mock_config
+
+    # Mock analyzer failure
+    mock_analyzer_instance = MagicMock()
+    mock_analyzer_instance.run.return_value = MagicMock(
+        success=False,
+        error_message="Analyzer crashed",
+        output_files={},
+    )
+    mock_analyzer.return_value = mock_analyzer_instance
+
+    args = Namespace(
+        config=None,
+        target_path=str(target_path),
+        outdir=None,
+        keep_artifacts=False,
+        clean=False,
+        advice=False,
+    )
+
+    exit_code = check_command(args)
+
+    # Should still succeed (analyzer failure doesn't abort check)
+    assert exit_code == 0
+
+
+@patch("cli.commands.check.LicenseHeaderChecker")
+@patch("cli.commands.check.RepoAnalyzerRunner")
+@patch("cli.commands.check.load_config")
+def test_check_command_license_header_failure(
+    mock_load_config, mock_analyzer, mock_checker, tmp_path
+):
+    """Test check command when license header check fails."""
+    target_path = tmp_path / "repo"
+    target_path.mkdir()
+
+    mock_config = MagicMock()
+    mock_config.target_path = str(target_path)
+    mock_config.outdir = str(tmp_path / "output")
+    mock_config.clean = False
+    mock_config.advice = False
+    mock_config.keep_artifacts = False
+    mock_config.rules.include = ["*"]
+    mock_config.rules.exclude = []
+    mock_config.rules.severity_overrides = {}
+    mock_config.license.spdx_id = "Apache-2.0"
+    mock_config.license.require_header = True
+    mock_config.repo_tags = {}
+    mock_config.integration.enable_repo_analyzer = False
+    mock_config.integration.enable_license_headers = True
+
+    mock_load_config.return_value = mock_config
+
+    # Mock license header check failure
+    mock_checker_instance = MagicMock()
+    mock_checker_instance.check.return_value = MagicMock(
+        success=False,
+        skipped=False,
+        error_message="Tool not found",
+        non_compliant_files=["file1.py", "file2.py"],
+    )
+    mock_checker.return_value = mock_checker_instance
+
+    args = Namespace(
+        config=None,
+        target_path=str(target_path),
+        outdir=None,
+        keep_artifacts=False,
+        clean=False,
+        advice=False,
+    )
+
+    exit_code = check_command(args)
+
+    # Should fail when license headers fail
+    assert exit_code == 1
+
+
+@patch("cli.commands.check.LicenseHeaderChecker")
+@patch("cli.commands.check.RepoAnalyzerRunner")
+@patch("cli.commands.check.load_config")
+def test_check_command_both_integrations_fail(
+    mock_load_config, mock_analyzer, mock_checker, tmp_path
+):
+    """Test check command when both integrations fail."""
+    target_path = tmp_path / "repo"
+    target_path.mkdir()
+
+    mock_config = MagicMock()
+    mock_config.target_path = str(target_path)
+    mock_config.outdir = str(tmp_path / "output")
+    mock_config.clean = False
+    mock_config.advice = False
+    mock_config.keep_artifacts = False
+    mock_config.rules.include = ["*"]
+    mock_config.rules.exclude = []
+    mock_config.rules.severity_overrides = {}
+    mock_config.license.spdx_id = "Apache-2.0"
+    mock_config.license.require_header = True
+    mock_config.repo_tags = {}
+    mock_config.integration.enable_repo_analyzer = True
+    mock_config.integration.enable_license_headers = True
+
+    mock_load_config.return_value = mock_config
+
+    # Mock both failures
+    mock_analyzer_instance = MagicMock()
+    mock_analyzer_instance.run.return_value = MagicMock(
+        success=False, error_message="Analyzer crashed", output_files={}
+    )
+    mock_analyzer.return_value = mock_analyzer_instance
+
+    mock_checker_instance = MagicMock()
+    mock_checker_instance.check.return_value = MagicMock(
+        success=False,
+        skipped=False,
+        error_message="Header check failed",
+        non_compliant_files=["file1.py"],
+    )
+    mock_checker.return_value = mock_checker_instance
+
+    args = Namespace(
+        config=None,
+        target_path=str(target_path),
+        outdir=None,
+        keep_artifacts=False,
+        clean=False,
+        advice=False,
+    )
+
+    exit_code = check_command(args)
+
+    # Should fail due to license header failure
+    assert exit_code == 1

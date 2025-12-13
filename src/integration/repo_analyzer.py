@@ -330,7 +330,13 @@ class RepoAnalyzerRunner:
             # Always cleanup temp directory
             if temp_dir and temp_dir.exists():
                 logger.debug(f"Cleaning up temp workspace: {temp_dir}")
-                shutil.rmtree(temp_dir, ignore_errors=True)
+                try:
+                    shutil.rmtree(temp_dir)
+                except OSError as e:
+                    logger.warning(
+                        f"Failed to clean up temp workspace {temp_dir}: {e}. "
+                        f"Manual cleanup may be required."
+                    )
 
     def _collect_output_files(self, outdir: Path) -> Dict[str, str]:
         """

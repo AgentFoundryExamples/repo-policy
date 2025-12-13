@@ -366,7 +366,7 @@ jobs:
       
       - name: Upload reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: policy-reports
           path: .repo-policy-output/
@@ -419,5 +419,4 @@ license-header check --path . --header LICENSE_HEADER
 
 - [Repository Analysis Integration](REPO_ANALYSIS.md)
 - [Configuration Schema](../README.md#configuration)
-- [License-header tool documentation](../LICENSE_HEADER.md)
 - Main repo-policy documentation in README.md
