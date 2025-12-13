@@ -82,7 +82,7 @@ class ReadmeRule(BaseRule):
     def _get_required_sections(self) -> List[str]:
         """Get required sections from config or use defaults."""
         # Check if config has readme section requirements
-        readme_config = self.config.rules.get("readme_required_sections", None)
+        readme_config = getattr(self.config.rules, "readme_required_sections", None)
         if readme_config is not None:
             return readme_config if isinstance(readme_config, list) else []
         return self.DEFAULT_REQUIRED_SECTIONS

@@ -126,6 +126,9 @@ class RuleEngine:
                     engine_result.error_count += 1
                 else:
                     engine_result.warning_count += 1
+            elif result.status.value == "warn":
+                engine_result.failed_rules += 1
+                engine_result.warning_count += 1
             elif result.status.value == "skip":
                 engine_result.skipped_rules += 1
             

@@ -276,7 +276,7 @@ class FactsExtractor:
     def _extract_large_files(self, facts: RepoFacts) -> None:
         """Extract large files exceeding configured threshold."""
         # Default threshold: 10MB
-        threshold = self.config.rules.get("large_file_threshold_mb", 10) * 1024 * 1024
+        threshold = getattr(self.config.rules, "large_file_threshold_mb", 10) * 1024 * 1024
         
         for file_path in facts.all_files:
             full_path = self.target_path / file_path
@@ -306,7 +306,9 @@ class FactsExtractor:
     def _extract_forbidden_files(self, facts: RepoFacts) -> None:
         """Extract files matching forbidden patterns."""
         # Get forbidden patterns from config or use defaults
-        forbidden_patterns = getattr(self.config.rules, "forbidden_patterns", self.DEFAULT_FORBIDDEN_PATTERNS)
+        forbidden_patterns = getattr(self.config.rules, "forbidden_patterns", None)
+        if forbidden_patterns is None:
+            forbidden_patterns = self.DEFAULT_FORBIDDEN_PATTERNS
         
         for file_path in facts.all_files:
             if self._matches_patterns(str(file_path), forbidden_patterns):
