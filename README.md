@@ -6,8 +6,11 @@ A deterministic repository policy enforcement tool with configurable rules and i
 
 - **Schema-driven configuration**: YAML-based config with validation
 - **Flexible CLI**: Support for `check` (default) and `init` commands
-- **Configurable rules**: Include/exclude patterns and severity overrides
-- **License management**: SPDX ID tracking and header requirements
+- **Configurable rules engine**: Pluggable rules with include/exclude patterns and severity overrides
+- **Documentation rules**: README presence and required sections
+- **License rules**: LICENSE file, SPDX ID, and header enforcement
+- **Hygiene rules**: CI workflows, .gitignore, forbidden files, and file size limits
+- **Test coverage rules**: Tests vs sources linkage with language-aware detection
 - **Preset configurations**: Baseline, standard, and strict presets
 - **Structured logging**: Clear output with exit code handling
 - **External tool integration**: Repo analyzer and license header checking
@@ -103,7 +106,15 @@ rules:
   include: ["*"]
   exclude: []
   severity_overrides:
-    license-header-missing: warning
+    readme-required: warning
+  # README section requirements (null = use defaults)
+  readme_required_sections: ["Installation", "Usage", "License"]
+  # Require tests if source files present
+  tests_required_if_sources_present: true
+  # Large file threshold in MB
+  large_file_threshold_mb: 10
+  # Forbidden file patterns (null = use defaults)
+  forbidden_patterns: null
 
 # Repository metadata
 repo_tags:
@@ -113,6 +124,29 @@ repo_tags:
 # Preset
 preset: null  # baseline, standard, or strict
 ```
+
+### Available Rules
+
+The following rules are evaluated by default:
+
+**Documentation Rules**
+- `readme-required`: Verifies README file presence and required sections
+
+**License Rules**
+- `license-file-required`: Verifies LICENSE file presence
+- `license-spdx-id-required`: Enforces SPDX ID in configuration
+- `license-header-required`: Checks license headers in source files (when enabled)
+
+**Hygiene Rules**
+- `ci-required`: Verifies CI workflow presence and test execution
+- `gitignore-required`: Requires .gitignore for projects with language markers
+- `forbidden-files`: Detects forbidden file patterns (e.g., .DS_Store, Thumbs.db)
+- `file-size-limit`: Warns about large files exceeding threshold
+
+**Test Rules**
+- `tests-required-with-sources`: Verifies tests exist when source files are present
+
+Rules can be included/excluded using glob patterns and have their severity overridden (error/warning/info).
 
 ### CLI Options
 
