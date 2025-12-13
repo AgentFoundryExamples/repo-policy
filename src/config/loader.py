@@ -29,11 +29,11 @@ logger = logging.getLogger(__name__)
 def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> Optional[Path]:
     """
     Find the config file by searching up from the target path.
-    
+
     Args:
         search_path: Starting path for search (defaults to current directory)
         max_depth: Maximum number of directories to traverse upward (default: 50)
-        
+
     Returns:
         Path to config file if found, None otherwise
     """
@@ -45,7 +45,7 @@ def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> 
     except (OSError, RuntimeError) as e:
         logger.warning(f"Error resolving search path: {e}")
         return None
-    
+
     # Search up to repository root with depth limit
     depth = 0
     while depth < max_depth:
@@ -55,7 +55,7 @@ def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> 
             current / ".repo-policy.yml",
             current / ".repo-policy.yaml",
         ]
-        
+
         for candidate in config_candidates:
             try:
                 if candidate.exists():
@@ -63,7 +63,7 @@ def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> 
             except (OSError, PermissionError) as e:
                 logger.debug(f"Cannot access {candidate}: {e}")
                 continue
-        
+
         # Check if we're at the repository root or filesystem root
         try:
             if (current / ".git").exists() or current == current.parent:
@@ -71,58 +71,58 @@ def find_config_file(search_path: Optional[str] = None, max_depth: int = 50) -> 
         except (OSError, PermissionError):
             # Cannot check for .git directory, likely at or near root
             break
-            
+
         current = current.parent
         depth += 1
-    
+
     return None
 
 
 def load_yaml_config(config_path: Path) -> Dict[str, Any]:
     """
     Load configuration from YAML file.
-    
+
     Args:
         config_path: Path to YAML config file
-        
+
     Returns:
         Dictionary of config values
-        
+
     Raises:
         FileNotFoundError: If config file doesn't exist
         yaml.YAMLError: If config file is invalid YAML
     """
     if not config_path.exists():
         raise FileNotFoundError(f"Config file not found: {config_path}")
-    
+
     with open(config_path, "r") as f:
         config_data = yaml.safe_load(f)
-    
+
     if config_data is None:
         return {}
-    
+
     if not isinstance(config_data, dict):
         raise ValueError(f"Config file must contain a YAML mapping, got {type(config_data)}")
-    
+
     return config_data
 
 
 def apply_cli_overrides(config_dict: Dict[str, Any], cli_args: Dict[str, Any]) -> Dict[str, Any]:
     """
     Apply CLI arguments to config dictionary with proper precedence.
-    
+
     CLI arguments take precedence over config file values.
-    
+
     Args:
         config_dict: Configuration from file
         cli_args: CLI arguments
-        
+
     Returns:
         Merged configuration dictionary
     """
     # Create a copy to avoid modifying the original
     merged = config_dict.copy()
-    
+
     # Direct mappings
     cli_to_config = {
         "target_path": "target_path",
@@ -132,11 +132,11 @@ def apply_cli_overrides(config_dict: Dict[str, Any], cli_args: Dict[str, Any]) -
         "advice": "advice",
         "preset": "preset",
     }
-    
+
     for cli_key, config_key in cli_to_config.items():
         if cli_key in cli_args and cli_args[cli_key] is not None:
             merged[config_key] = cli_args[cli_key]
-    
+
     return merged
 
 
@@ -147,15 +147,15 @@ def load_config(
 ) -> Config:
     """
     Load configuration from file and apply CLI overrides.
-    
+
     Args:
         config_path: Explicit path to config file (or None to auto-discover)
         cli_args: CLI arguments to override config file values
         allow_missing: If True, use defaults when config file is missing
-        
+
     Returns:
         Validated Config object
-        
+
     Raises:
         FileNotFoundError: If config file is specified but doesn't exist
         ValidationError: If config fails schema validation
@@ -163,7 +163,7 @@ def load_config(
     """
     cli_args = cli_args or {}
     config_dict: Dict[str, Any] = {}
-    
+
     # Determine config file path
     if config_path:
         config_file_path = Path(config_path)
@@ -173,7 +173,7 @@ def load_config(
         # Auto-discover config file
         search_path = cli_args.get("target_path")
         config_file_path = find_config_file(search_path)
-    
+
     # Load config file if found
     if config_file_path:
         try:
@@ -190,10 +190,10 @@ def load_config(
             "No config file found, using defaults. "
             "Run 'repo-policy init' to create a baseline configuration."
         )
-    
+
     # Apply CLI overrides
     config_dict = apply_cli_overrides(config_dict, cli_args)
-    
+
     # Validate and create Config object
     try:
         config = Config(**config_dict)
@@ -203,7 +203,7 @@ def load_config(
             field = ".".join(str(loc) for loc in error["loc"])
             logger.error(f"  {field}: {error['msg']}")
         raise
-    
+
     # Post-validation warnings
     if config.license.require_header:
         if not config.license.spdx_id:
@@ -216,5 +216,5 @@ def load_config(
                 "license.require_header is True but license.header_template_path is not set. "
                 "Using default header template."
             )
-    
+
     return config

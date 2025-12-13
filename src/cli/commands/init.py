@@ -160,10 +160,10 @@ rules:
 def get_config_template(preset: Optional[str] = None) -> str:
     """
     Get the appropriate config template based on preset.
-    
+
     Args:
         preset: Configuration preset (baseline, standard, strict, or None)
-        
+
     Returns:
         Config template string
     """
@@ -180,10 +180,10 @@ def get_config_template(preset: Optional[str] = None) -> str:
 def prompt_confirm(message: str) -> bool:
     """
     Prompt user for yes/no confirmation.
-    
+
     Args:
         message: Confirmation message
-        
+
     Returns:
         True if user confirms, False otherwise
     """
@@ -197,18 +197,18 @@ def prompt_confirm(message: str) -> bool:
 def init_command(args: argparse.Namespace) -> int:
     """
     Execute the init command to create a baseline configuration.
-    
+
     Args:
         args: Parsed command-line arguments
-        
+
     Returns:
         Exit code (0 for success, 1 for error)
     """
     logger.info("Initializing repo-policy configuration")
-    
+
     # Determine config file path
     config_file = Path("repo-policy.yml")
-    
+
     # Check if config already exists
     if config_file.exists():
         if not args.force:
@@ -217,22 +217,22 @@ def init_command(args: argparse.Namespace) -> int:
                 logger.info("Init cancelled by user")
                 return 0
         logger.info(f"Overwriting existing config: {config_file}")
-    
+
     # Get template based on preset
     preset = getattr(args, "preset", None)
     template = get_config_template(preset)
-    
+
     # Write config file
     try:
         with open(config_file, "w") as f:
             f.write(template)
         logger.info(f"Created configuration file: {config_file}")
-        
+
         if preset:
             logger.info(f"Applied preset: {preset}")
         else:
             logger.info("Created baseline configuration with comments")
-        
+
         # Provide next steps
         logger.info("")
         logger.info("Next steps:")
@@ -240,7 +240,7 @@ def init_command(args: argparse.Namespace) -> int:
         logger.info("  2. Configure header template path if using license headers")
         logger.info("  3. Adjust rule includes/excludes as needed")
         logger.info("  4. Run 'repo-policy check' to validate your repository")
-        
+
         return 0
     except Exception as e:
         logger.error(f"Failed to create config file: {e}")

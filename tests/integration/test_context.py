@@ -90,7 +90,7 @@ class TestPolicyContext:
             command=["repo-analyzer", "--path", "."],
             output_files={"tree": "/path/to/tree.json"},
         )
-        
+
         metadata = context.get_analyzer_metadata()
         assert metadata["status"] == "success"
         assert metadata["exit_code"] == 0
@@ -111,7 +111,7 @@ class TestPolicyContext:
             command=["repo-analyzer"],
             error_message="Analysis failed",
         )
-        
+
         metadata = context.get_analyzer_metadata()
         assert metadata["status"] == "failed"
         assert metadata["exit_code"] == 1
@@ -133,7 +133,7 @@ class TestPolicyContext:
             stderr="",
             skipped=True,
         )
-        
+
         metadata = context.get_license_header_metadata()
         assert metadata["status"] == "skipped"
 
@@ -151,7 +151,7 @@ class TestPolicyContext:
             non_compliant_files=[],
             summary={"compliant": 2, "non_compliant": 0},
         )
-        
+
         metadata = context.get_license_header_metadata()
         assert metadata["status"] == "success"
         assert metadata["exit_code"] == 0
@@ -177,7 +177,7 @@ class TestPolicyContext:
             summary={"compliant": 1, "non_compliant": 2},
             error_message="Check failed",
         )
-        
+
         metadata = context.get_license_header_metadata()
         assert metadata["status"] == "failed"
         assert metadata["exit_code"] == 1
@@ -189,7 +189,7 @@ class TestPolicyContext:
         """Test to_dict with empty context."""
         context = PolicyContext()
         result = context.to_dict()
-        
+
         assert "analyzer" in result
         assert "license_headers" in result
         assert "metadata" in result
@@ -200,7 +200,7 @@ class TestPolicyContext:
     def test_to_dict_with_data(self):
         """Test to_dict with populated context."""
         context = PolicyContext()
-        
+
         context.analyzer_result = AnalyzerResult(
             success=True,
             exit_code=0,
@@ -209,7 +209,7 @@ class TestPolicyContext:
             version="1.0.0",
             command=["repo-analyzer"],
         )
-        
+
         context.license_header_result = LicenseHeaderResult(
             success=True,
             exit_code=0,
@@ -220,11 +220,11 @@ class TestPolicyContext:
             compliant_files=["file1.py"],
             non_compliant_files=[],
         )
-        
+
         context.metadata = {"key": "value"}
-        
+
         result = context.to_dict()
-        
+
         assert result["analyzer"]["status"] == "success"
         assert result["analyzer"]["version"] == "1.0.0"
         assert result["license_headers"]["status"] == "success"
@@ -236,6 +236,6 @@ class TestPolicyContext:
         context = PolicyContext()
         context.metadata["custom_key"] = "custom_value"
         context.metadata["another_key"] = {"nested": "data"}
-        
+
         assert context.metadata["custom_key"] == "custom_value"
         assert context.metadata["another_key"]["nested"] == "data"

@@ -261,9 +261,7 @@ class TestRepoAnalyzerRunner:
     @patch("integration.repo_analyzer.subprocess.run")
     @patch("integration.repo_analyzer.shutil.rmtree")
     @patch("integration.repo_analyzer.tempfile.mkdtemp")
-    def test_run_temp_workspace_clone_failure(
-        self, mock_mkdtemp, mock_rmtree, mock_run, tmp_path
-    ):
+    def test_run_temp_workspace_clone_failure(self, mock_mkdtemp, mock_rmtree, mock_run, tmp_path):
         """Test temp workspace mode when git clone fails."""
         target = tmp_path / "repo"
         target.mkdir()

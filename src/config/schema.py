@@ -88,7 +88,7 @@ class RuleConfig(BaseModel):
         """Validate severity override values."""
         if not isinstance(v, dict):
             return v
-        
+
         result = {}
         for rule, severity in v.items():
             if isinstance(severity, str):
@@ -101,9 +101,7 @@ class RuleConfig(BaseModel):
                         f"Valid values: {', '.join(valid_values)}"
                     )
             else:
-                raise TypeError(
-                    f"Severity must be a string, not {type(severity).__name__}"
-                )
+                raise TypeError(f"Severity must be a string, not {type(severity).__name__}")
         return result
 
 
@@ -183,43 +181,43 @@ class Config(BaseModel):
         default=None,
         description="Path to the config file (for tracking purposes)",
     )
-    
+
     # File classification
     globs: GlobPatterns = Field(
         default_factory=GlobPatterns,
         description="Glob patterns for file classification",
     )
-    
+
     # Rule configuration
     rules: RuleConfig = Field(
         default_factory=RuleConfig,
         description="Rule configuration",
     )
-    
+
     # License configuration
     license: LicenseConfig = Field(
         default_factory=LicenseConfig,
         description="License and header configuration",
     )
-    
+
     # Integration configuration
     integration: IntegrationConfig = Field(
         default_factory=IntegrationConfig,
         description="External tool integration configuration",
     )
-    
+
     # Repository metadata
     repo_tags: Dict[str, str] = Field(
         default_factory=dict,
         description="Repository tags/metadata (e.g., repo_type: 'library')",
     )
-    
+
     # Preset configuration
     preset: Optional[Preset] = Field(
         default=None,
         description="Configuration preset to apply",
     )
-    
+
     # CLI-specific options
     keep_artifacts: bool = Field(
         default=False,
@@ -245,9 +243,7 @@ class Config(BaseModel):
                 return Preset(v.lower())
             except ValueError:
                 valid_values = [p.value for p in Preset]
-                raise ValueError(
-                    f"Invalid preset '{v}'. Valid values: {', '.join(valid_values)}"
-                )
+                raise ValueError(f"Invalid preset '{v}'. Valid values: {', '.join(valid_values)}")
         raise TypeError(f"Preset must be a string, not {type(v).__name__}")
 
     def model_post_init(self, __context):

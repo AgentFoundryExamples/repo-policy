@@ -29,15 +29,15 @@ logger = logging.getLogger(__name__)
 def check_command(args: argparse.Namespace) -> int:
     """
     Execute the check command to run policy checks.
-    
+
     Args:
         args: Parsed command-line arguments
-        
+
     Returns:
         Exit code (0 for success, 1 for error-level failures)
     """
     logger.info("Starting policy check")
-    
+
     # Build CLI args dict for config loader
     cli_args = {
         "target_path": args.target_path,
@@ -46,23 +46,23 @@ def check_command(args: argparse.Namespace) -> int:
         "clean": args.clean,
         "advice": args.advice,
     }
-    
+
     # Load configuration
     try:
         config = load_config(config_path=args.config, cli_args=cli_args)
     except Exception as e:
         logger.error(f"Failed to load configuration: {e}")
         return 1
-    
+
     # Resolve target path
     target_path = Path(config.target_path).resolve()
     if not target_path.exists():
         logger.error(f"Target path does not exist: {target_path}")
         return 1
-    
+
     logger.info(f"Target path: {target_path}")
     logger.info(f"Output directory: {config.outdir}")
-    
+
     # Clean output directory if requested
     if config.clean:
         outdir = Path(config.outdir)
@@ -75,15 +75,15 @@ def check_command(args: argparse.Namespace) -> int:
                 else:
                     item.unlink(missing_ok=True)
             logger.debug(f"Cleaned {outdir}")
-    
+
     # Create output directory
     outdir = Path(config.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     logger.info(f"Output directory ready: {outdir}")
-    
+
     # Initialize policy context
     context = PolicyContext()
-    
+
     # Run repo analyzer integration
     if config.integration.enable_repo_analyzer:
         logger.info("Running repo analyzer integration...")
@@ -91,15 +91,15 @@ def check_command(args: argparse.Namespace) -> int:
             analyzer_binary=config.integration.repo_analyzer_binary,
             workspace_mode=config.integration.repo_analyzer_workspace_mode,
         )
-        
+
         analyzer_result = analyzer.run(
             target_path=target_path,
             outdir=outdir,
             keep_artifacts=config.keep_artifacts,
         )
-        
+
         context.analyzer_result = analyzer_result
-        
+
         if analyzer_result.success:
             logger.info("Repo analyzer completed successfully")
             if analyzer_result.output_files:
@@ -110,14 +110,14 @@ def check_command(args: argparse.Namespace) -> int:
             logger.warning("Repo analyzer failed")
     else:
         logger.info("Repo analyzer integration disabled")
-    
+
     # Run license header integration
     if config.integration.enable_license_headers and config.license.require_header:
         logger.info("Running license header check...")
         checker = LicenseHeaderChecker(
             binary_path=config.integration.license_header_binary,
         )
-        
+
         header_result = checker.check(
             target_path=target_path,
             outdir=outdir,
@@ -127,9 +127,9 @@ def check_command(args: argparse.Namespace) -> int:
             exclude_globs=config.license.exclude_globs,
             keep_artifacts=config.keep_artifacts,
         )
-        
+
         context.license_header_result = header_result
-        
+
         if header_result.success:
             logger.info("License header check passed")
             if header_result.summary:
@@ -150,23 +150,23 @@ def check_command(args: argparse.Namespace) -> int:
         )()
     else:
         logger.info("License header integration disabled")
-    
+
     # Show advice if requested
     if config.advice:
         logger.info("Advice mode enabled (stub)")
         # Stub: advice logic would be implemented here
-    
+
     # Run policy checks (stub)
     logger.info("Running policy checks")
     logger.debug(f"Rules to include: {config.rules.include}")
     logger.debug(f"Rules to exclude: {config.rules.exclude}")
     logger.debug(f"Severity overrides: {config.rules.severity_overrides}")
-    
+
     # Log integration context
     logger.info(f"License SPDX ID: {config.license.spdx_id or 'not set'}")
     logger.info(f"Require headers: {config.license.require_header}")
     logger.info(f"Repository tags: {config.repo_tags}")
-    
+
     # Store context metadata
     context.metadata["config"] = {
         "target_path": str(target_path),
@@ -175,10 +175,10 @@ def check_command(args: argparse.Namespace) -> int:
         "require_header": config.license.require_header,
         "repo_tags": config.repo_tags,
     }
-    
+
     # Determine if there are errors
     has_errors = False
-    
+
     # Check if license headers failed
     if (
         context.license_header_result
@@ -186,10 +186,10 @@ def check_command(args: argparse.Namespace) -> int:
         and not context.license_header_result.success
     ):
         has_errors = True
-    
+
     # Log final context
     logger.debug(f"Policy context: {context.to_dict()}")
-    
+
     # Report results
     if has_errors:
         logger.error("Policy check failed with error-level violations")

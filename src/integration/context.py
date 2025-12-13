@@ -24,26 +24,20 @@ class PolicyContext:
 
     # Repo analyzer results
     analyzer_result: Optional[AnalyzerResult] = None
-    
+
     # License header results
     license_header_result: Optional[LicenseHeaderResult] = None
-    
+
     # Additional metadata
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def has_analyzer_data(self) -> bool:
         """Check if analyzer data is available."""
-        return (
-            self.analyzer_result is not None
-            and self.analyzer_result.success
-        )
+        return self.analyzer_result is not None and self.analyzer_result.success
 
     def has_license_header_data(self) -> bool:
         """Check if license header data is available."""
-        return (
-            self.license_header_result is not None
-            and not self.license_header_result.skipped
-        )
+        return self.license_header_result is not None and not self.license_header_result.skipped
 
     def get_analyzer_metadata(self) -> Dict[str, Any]:
         """Get analyzer metadata for reporting."""

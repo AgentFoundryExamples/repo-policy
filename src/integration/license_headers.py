@@ -137,7 +137,7 @@ class LicenseHeaderChecker:
             header_path = Path(header_template_path)
             if not header_path.is_absolute():
                 header_path = target_path / header_path
-            
+
             if not header_path.exists():
                 return LicenseHeaderResult(
                     success=False,
@@ -152,7 +152,7 @@ class LicenseHeaderChecker:
             header_path = target_path / "LICENSE_HEADER"
             if not header_path.exists():
                 header_path = target_path / "LICENSE_HEADER.md"
-            
+
             if not header_path.exists():
                 return LicenseHeaderResult(
                     success=False,
