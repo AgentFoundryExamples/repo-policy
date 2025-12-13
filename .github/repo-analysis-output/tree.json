@@ -68,6 +68,10 @@
     },
     {
       "type": "file",
+      "name": "LICENSE_HEADER.md"
+    },
+    {
+      "type": "file",
       "name": "README.md"
     },
     {
