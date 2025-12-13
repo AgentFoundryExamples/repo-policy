@@ -1,0 +1,39 @@
+# CircleCI configuration for repo-policy
+# Place this file at: .circleci/config.yml
+
+version: 2.1
+
+jobs:
+  policy-check:
+    docker:
+      - image: python:3.11
+    
+    steps:
+      - checkout
+      
+      - run:
+          name: Install repo-policy
+          command: |
+            pip install repo-policy
+      
+      # Optional: Install external tools
+      # - run:
+      #     name: Install external tools
+      #     command: |
+      #       pip install "git+https://github.com/AgentFoundryExamples/repo-summarizer-v1.git@main"
+      #       pip install "git+https://github.com/AgentFoundryExamples/license-header.git@main"
+      
+      - run:
+          name: Run policy check
+          command: |
+            repo-policy check --clean --keep-artifacts
+      
+      - store_artifacts:
+          path: .repo-policy-output/
+          destination: policy-reports
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - policy-check

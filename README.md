@@ -39,6 +39,17 @@ Run policy checks:
 repo-policy check
 ```
 
+For comprehensive usage information, see the [Usage Guide](docs/usage.md).
+
+## Documentation
+
+- **[Usage Guide](docs/usage.md)** - Complete CLI reference, commands, options, and exit codes
+- **[Configuration Guide](docs/config.md)** - Configuration schema, rule catalog, presets, and examples
+- **[CI/CD Integration](docs/ci.md)** - GitHub Actions, pre-commit hooks, and other CI platforms
+- **[Repository Analysis Integration](docs/REPO_ANALYSIS.md)** - Repo analyzer tool integration
+- **[License Header Integration](docs/LICENSE_HEADER.md)** - License header checking integration
+- **[Report Format](docs/report-format.md)** - Report structure and parsing guide
+
 ## Usage
 
 ### Check Command (Default)
@@ -81,9 +92,20 @@ repo-policy init --force
 
 ## Configuration
 
-The `repo-policy.yml` file supports the following options:
+The `repo-policy.yml` file supports the following options. For comprehensive documentation, see [Configuration Guide](docs/config.md).
+
+### Configuration Presets
+
+- **baseline**: Minimal requirements for basic repository hygiene
+- **standard**: Recommended settings for most projects (default)
+- **strict**: Comprehensive enforcement for high-quality projects
+
+### Quick Configuration Example
 
 ```yaml
+# Use a preset for quick start
+preset: standard
+
 # Target repository path
 target_path: .
 
@@ -120,10 +142,9 @@ rules:
 repo_tags:
   repo_type: library
   language: python
-
-# Preset
-preset: null  # baseline, standard, or strict
 ```
+
+For complete schema reference, preset details, and examples, see [Configuration Guide](docs/config.md).
 
 ### Available Rules
 
@@ -146,7 +167,7 @@ The following rules are evaluated by default:
 **Test Rules**
 - `tests-required-with-sources`: Verifies tests exist when source files are present
 
-Rules can be included/excluded using glob patterns and have their severity overridden (error/warning/info).
+Rules can be included/excluded using glob patterns and have their severity overridden (error/warning/info). See [Configuration Guide](docs/config.md#rule-catalog) for complete rule documentation.
 
 ### CLI Options
 
@@ -158,11 +179,15 @@ Rules can be included/excluded using glob patterns and have their severity overr
 - `--advice`: Show advice and recommendations (stub)
 - `-v, --verbose`: Enable verbose output
 
+For detailed CLI reference, see [Usage Guide](docs/usage.md).
+
 ### Exit Codes
 
 - `0`: Success (no error-level failures)
 - `1`: Error (error-level policy failures or execution error)
 - `130`: Interrupted by user (Ctrl+C)
+
+**Note**: Only `error` severity failures cause non-zero exit codes. Warnings are reported but don't fail builds. See [CI Integration Guide](docs/ci.md#exit-code-behavior) for details.
 
 ## Development
 
@@ -185,6 +210,57 @@ Type checking:
 ```bash
 mypy src
 ```
+
+## CI/CD Integration
+
+repo-policy can be integrated into various CI/CD platforms:
+
+### GitHub Actions Example
+
+```yaml
+name: Policy Check
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install repo-policy
+        run: pip install repo-policy
+      
+      - name: Run policy check
+        run: repo-policy check --clean --keep-artifacts
+      
+      - name: Upload policy reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-reports
+          path: .repo-policy-output/
+```
+
+### Pre-Commit Hook Example
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: repo-policy
+        name: Repository Policy Check
+        entry: repo-policy check
+        language: system
+        pass_filenames: false
+        always_run: true
+```
+
+For comprehensive CI/CD integration guides including GitLab CI, CircleCI, Jenkins, and more, see [CI Integration Guide](docs/ci.md).
 
 ## Integration Guides
 

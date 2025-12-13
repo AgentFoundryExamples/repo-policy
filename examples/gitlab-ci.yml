@@ -1,0 +1,25 @@
+# GitLab CI configuration for repo-policy
+# Place this file at: .gitlab-ci.yml
+
+policy-check:
+  stage: test
+  image: python:3.11
+  
+  before_script:
+    - pip install repo-policy
+    # Optional: Install external tools
+    # - pip install "git+https://github.com/AgentFoundryExamples/repo-summarizer-v1.git@main"
+    # - pip install "git+https://github.com/AgentFoundryExamples/license-header.git@main"
+  
+  script:
+    - repo-policy check --clean --keep-artifacts
+  
+  artifacts:
+    when: always
+    paths:
+      - .repo-policy-output/
+    expire_in: 30 days
+  
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

@@ -1,0 +1,15 @@
+# Pre-commit configuration for repo-policy
+# Place this file at: .pre-commit-config.yaml
+#
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  - repo: local
+    hooks:
+      - id: repo-policy
+        name: Repository Policy Check
+        entry: repo-policy check
+        language: system
+        pass_filenames: false
+        always_run: true

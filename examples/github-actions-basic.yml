@@ -1,0 +1,41 @@
+# Basic GitHub Actions workflow for repo-policy
+# Place this file at: .github/workflows/policy-check.yml
+
+name: Repository Policy Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  policy-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git-based checks
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install repo-policy
+        run: |
+          pip install repo-policy
+      
+      - name: Run policy check
+        run: |
+          repo-policy check --clean --keep-artifacts
+      
+      - name: Upload policy reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-reports
+          path: .repo-policy-output/
+          retention-days: 30

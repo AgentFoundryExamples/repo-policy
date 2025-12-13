@@ -1,0 +1,133 @@
+# repo-policy Strict Configuration Example
+# Comprehensive enforcement for high-quality projects
+# Recommended for: critical infrastructure, security-sensitive code, compliance requirements
+
+target_path: .
+outdir: .repo-policy-output
+
+# Use strict preset
+preset: strict
+
+# License configuration (strict)
+license:
+  spdx_id: Apache-2.0
+  header_template_path: LICENSE_HEADER.md
+  require_header: true  # Mandatory headers
+  include_globs:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.jsx"
+    - "**/*.java"
+    - "**/*.go"
+    - "**/*.rs"
+    - "**/*.c"
+    - "**/*.cpp"
+    - "**/*.h"
+    - "**/*.hpp"
+  exclude_globs:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/*.test.js"
+    - "**/*.test.ts"
+    - "**/*.spec.js"
+    - "**/*.spec.ts"
+    - "**/vendor/**"
+    - "**/node_modules/**"
+    - "**/third_party/**"
+    - "**/.venv/**"
+
+# File classification patterns (comprehensive)
+globs:
+  source:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.jsx"
+    - "**/*.java"
+    - "**/*.go"
+    - "**/*.rs"
+    - "**/*.c"
+    - "**/*.cpp"
+    - "**/*.h"
+    - "**/*.hpp"
+  test:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/tests/**/*.py"
+    - "**/*.test.js"
+    - "**/*.test.ts"
+    - "**/*.spec.js"
+    - "**/*.spec.ts"
+    - "**/__tests__/**"
+    - "**/*Test.java"
+    - "**/*_test.go"
+    - "**/test_*.rs"
+
+# Rule configuration (strict)
+rules:
+  include:
+    - "*"
+  exclude: []
+  
+  # All rules as errors for strict
+  severity_overrides:
+    readme-required: error
+    license-file-required: error
+    license-spdx-id-required: error
+    license-header-required: error
+    ci-required: error
+    gitignore-required: error
+    forbidden-files: error
+    file-size-limit: error
+    tests-required-with-sources: error
+  
+  # Comprehensive README requirements
+  readme_required_sections:
+    - Overview
+    - Installation
+    - Configuration
+    - Usage
+    - Testing
+    - Contributing
+    - Security
+    - License
+  
+  # Tests mandatory
+  tests_required_if_sources_present: true
+  
+  # Strict file size limit
+  large_file_threshold_mb: 5
+  
+  # Comprehensive forbidden patterns
+  forbidden_patterns:
+    - ".DS_Store"
+    - "Thumbs.db"
+    - "desktop.ini"
+    - "*.tmp"
+    - "*.temp"
+    - "*.swp"
+    - "*.swo"
+    - "*.bak"
+    - "*.orig"
+    - "*.log"
+    - ".vscode/settings.json"  # User-specific IDE settings
+
+# Integration (full enforcement)
+integration:
+  enable_repo_analyzer: true
+  repo_analyzer_binary: null
+  repo_analyzer_workspace_mode: temp_workspace  # Maximum isolation
+  enable_license_headers: true
+  license_header_binary: null
+
+# Repository metadata
+repo_tags:
+  repo_type: service
+  language: python
+  team: platform-engineering
+  tier: production
+  compliance: soc2
+  security_level: high
