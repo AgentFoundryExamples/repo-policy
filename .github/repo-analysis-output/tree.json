@@ -69,6 +69,10 @@
     {
       "type": "file",
       "name": "README.md"
+    },
+    {
+      "type": "file",
+      "name": "REPO_ANALYSIS.md"
     }
   ]
 }
