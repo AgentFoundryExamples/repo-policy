@@ -223,6 +223,39 @@ def check_command(args: argparse.Namespace) -> int:
     # Log final context
     logger.debug(f"Policy context: {context.to_dict()}")
 
+    # Generate policy reports
+    logger.info("Generating policy reports...")
+    from reporting import generate_json_report, generate_markdown_report
+    
+    json_report_path = outdir / "policy_report.json"
+    md_report_path = outdir / "policy_report.md"
+    
+    report_generation_failed = False
+    try:
+        generate_json_report(
+            rule_results=rule_results,
+            context=context,
+            repo_path=target_path,
+            config_path=config.config_file or args.config or "repo-policy.yml",
+            output_path=json_report_path,
+        )
+        
+        generate_markdown_report(
+            rule_results=rule_results,
+            context=context,
+            repo_path=target_path,
+            config_path=config.config_file or args.config or "repo-policy.yml",
+            output_path=md_report_path,
+        )
+    except (OSError, IOError) as e:
+        logger.error(f"Failed to write reports (I/O error): {e}")
+        logger.error("Reports are required for CI/CD automation. Please check output directory permissions.")
+        report_generation_failed = True
+    except Exception as e:
+        logger.error(f"Failed to generate reports: {e}", exc_info=getattr(args, 'verbose', False))
+        logger.error("Report generation failed. Some CI/CD automation may not function correctly.")
+        report_generation_failed = True
+    
     # Report results summary
     logger.info("=" * 60)
     logger.info("POLICY CHECK SUMMARY")
@@ -234,6 +267,14 @@ def check_command(args: argparse.Namespace) -> int:
     logger.info(f"    Warnings: {rule_results.warning_count}")
     logger.info(f"  Skipped: {rule_results.skipped_rules}")
     logger.info("=" * 60)
+    
+    # Log report paths
+    if not report_generation_failed:
+        logger.info(f"Reports generated:")
+        logger.info(f"  JSON: {json_report_path}")
+        logger.info(f"  Markdown: {md_report_path}")
+    else:
+        logger.warning("Reports were not generated due to errors (see above)")
     
     # Determine exit code based on error-level failures
     if rule_results.has_errors():
