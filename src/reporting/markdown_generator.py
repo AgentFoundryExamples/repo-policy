@@ -14,7 +14,7 @@
 """Markdown report generator for policy check results."""
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -56,7 +56,7 @@ def generate_markdown_report(
     
     # Header
     sections.append("# Policy Check Report\n")
-    sections.append(f"**Generated:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC\n")
+    sections.append(f"**Generated:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC\n")
     sections.append("---\n")
     
     # Overview

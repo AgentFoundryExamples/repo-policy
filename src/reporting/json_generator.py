@@ -15,7 +15,7 @@
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -51,7 +51,7 @@ def generate_json_report(
     # Build report structure
     report = {
         "version": "1.0",
-        "generated_at": datetime.utcnow().isoformat() + "Z",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "metadata": metadata,
         "summary": {
             "total_rules": rule_results.total_rules,

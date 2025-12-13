@@ -247,7 +247,7 @@ def check_command(args: argparse.Namespace) -> int:
             output_path=md_report_path,
         )
     except Exception as e:
-        logger.error(f"Failed to generate reports: {e}", exc_info=args.verbose)
+        logger.error(f"Failed to generate reports: {e}", exc_info=getattr(args, 'verbose', False))
         # Continue even if report generation fails
     
     # Report results summary
