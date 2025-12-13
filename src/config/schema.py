@@ -81,6 +81,24 @@ class RuleConfig(BaseModel):
         default_factory=dict,
         description="Override severity for specific rules",
     )
+    
+    # Additional rule configuration options
+    readme_required_sections: Optional[List[str]] = Field(
+        default=None,
+        description="Required sections in README (None = use defaults)",
+    )
+    tests_required_if_sources_present: bool = Field(
+        default=True,
+        description="Require tests if source files are present",
+    )
+    large_file_threshold_mb: int = Field(
+        default=10,
+        description="Threshold in MB for large file warnings",
+    )
+    forbidden_patterns: Optional[List[str]] = Field(
+        default=None,
+        description="Forbidden file patterns (None = use defaults)",
+    )
 
     @field_validator("severity_overrides", mode="before")
     @classmethod
@@ -103,6 +121,10 @@ class RuleConfig(BaseModel):
             else:
                 raise TypeError(f"Severity must be a string, not {type(severity).__name__}")
         return result
+    
+    def get(self, key: str, default=None):
+        """Get a configuration value by key (for backward compatibility)."""
+        return getattr(self, key, default)
 
 
 class LicenseConfig(BaseModel):
