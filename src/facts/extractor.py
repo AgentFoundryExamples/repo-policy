@@ -319,7 +319,30 @@ class FactsExtractor:
     
     def _matches_patterns(self, path: str, patterns: List[str]) -> bool:
         """Check if path matches any of the glob patterns."""
+        path_obj = Path(path)
         for pattern in patterns:
-            if fnmatch.fnmatch(path, pattern):
-                return True
+            # Handle ** glob patterns by checking all path segments
+            if '**' in pattern:
+                # For ** patterns, try matching against the path and all subpaths
+                # e.g., **/*.py should match both "main.py" and "src/main.py"
+                pattern_parts = pattern.split('/')
+                
+                # Try matching the full path first
+                if path_obj.match(pattern):
+                    return True
+                
+                # If pattern starts with **, try matching without the **
+                if pattern_parts[0] == '**':
+                    rest_pattern = '/'.join(pattern_parts[1:])
+                    if rest_pattern and path_obj.match(rest_pattern):
+                        return True
+                    # Also try matching against parent paths
+                    for i in range(len(path_obj.parts)):
+                        subpath = Path(*path_obj.parts[i:])
+                        if subpath.match(rest_pattern):
+                            return True
+            else:
+                # Simple pattern without **, use Path.match() or fnmatch
+                if path_obj.match(pattern) or fnmatch.fnmatch(path, pattern):
+                    return True
         return False
