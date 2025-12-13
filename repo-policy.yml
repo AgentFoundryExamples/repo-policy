@@ -1,0 +1,73 @@
+# repo-policy configuration file
+# See documentation: https://github.com/AgentFoundryExamples/repo-policy
+
+# Target repository path (default: current directory)
+target_path: .
+
+# Output directory for reports and artifacts
+outdir: .repo-policy-output
+
+# License configuration
+license:
+  # SPDX license identifier (e.g., Apache-2.0, MIT, GPL-3.0)
+  # See https://spdx.org/licenses/ for full list
+  spdx_id: Apache-2.0
+  
+  # Path to license header template file
+  # Template can use variables: {year}, {author}, etc.
+  header_template_path: LICENSE_HEADER.md
+  
+  # Require license headers in source files
+  require_header: false
+
+# File classification glob patterns
+globs:
+  # Source file patterns
+  source:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.java"
+    - "**/*.go"
+    - "**/*.rs"
+    - "**/*.c"
+    - "**/*.cpp"
+    - "**/*.h"
+    - "**/*.hpp"
+  
+  # Test file patterns
+  test:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/tests/**"
+    - "**/*.test.js"
+    - "**/*.test.ts"
+    - "**/*.spec.js"
+    - "**/*.spec.ts"
+
+# Rule configuration
+rules:
+  # Rules to include (glob patterns, default: all)
+  include:
+    - "*"
+  
+  # Rules to exclude (glob patterns)
+  exclude: []
+  
+  # Override severity for specific rules
+  # Valid severities: error, warning, info
+  severity_overrides: {}
+
+# Repository metadata and tags
+repo_tags:
+  repo_type: tool
+  language: python
+
+# Configuration preset (optional)
+# Valid presets: baseline, standard, strict
+preset: null
+
+# Runtime options (can be overridden via CLI)
+keep_artifacts: false
+clean: false
+advice: false
