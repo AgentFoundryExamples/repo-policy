@@ -1,0 +1,244 @@
+{
+  "schema_version": "2.0",
+  "total_files": 17,
+  "files": [
+    {
+      "schema_version": "2.0",
+      "path": "src/__init__.py",
+      "language": "Python",
+      "role": "module-init",
+      "role_justification": "module initialization file '__init__'",
+      "summary": "Python module initialization (role: module-init)",
+      "summary_text": "Python module initialization (role: module-init)",
+      "metrics": {
+        "size_bytes": 673,
+        "loc": 2,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/cli/__init__.py",
+      "language": "Python",
+      "role": "module-init",
+      "role_justification": "module initialization file '__init__'",
+      "summary": "Python module initialization (role: module-init)",
+      "summary_text": "Python module initialization (role: module-init)",
+      "metrics": {
+        "size_bytes": 615,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/cli/commands/__init__.py",
+      "language": "Python",
+      "role": "module-init",
+      "role_justification": "module initialization file '__init__'",
+      "summary": "Python module initialization (role: module-init)",
+      "summary_text": "Python module initialization (role: module-init)",
+      "metrics": {
+        "size_bytes": 622,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/cli/commands/check.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 3402,
+        "loc": 57,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/cli/commands/init.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 6284,
+        "loc": 149,
+        "todo_count": 5
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/cli/main.py",
+      "language": "Python",
+      "role": "entry-point",
+      "role_justification": "common entry point name 'main'",
+      "summary": "Python main entry point (role: entry-point)",
+      "summary_text": "Python main entry point (role: entry-point)",
+      "metrics": {
+        "size_bytes": 5191,
+        "loc": 144,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/config/__init__.py",
+      "language": "Python",
+      "role": "module-init",
+      "role_justification": "module initialization file '__init__'",
+      "summary": "Python module initialization (role: module-init)",
+      "summary_text": "Python module initialization (role: module-init)",
+      "metrics": {
+        "size_bytes": 771,
+        "loc": 4,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/config/loader.py",
+      "language": "Python",
+      "role": "implementation",
+      "role_justification": "general implementation file (default classification)",
+      "summary": "Python core implementation",
+      "summary_text": "Python core implementation",
+      "metrics": {
+        "size_bytes": 7075,
+        "loc": 155,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "src/config/schema.py",
+      "language": "Python",
+      "role": "model",
+      "role_justification": "model/schema name 'schema'",
+      "summary": "Python data models (role: model)",
+      "summary_text": "Python data models (role: model)",
+      "metrics": {
+        "size_bytes": 6182,
+        "loc": 158,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/__init__.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "located in 'tests' directory",
+      "summary": "Python test module initialization (role: test)",
+      "summary_text": "Python test module initialization (role: test)",
+      "metrics": {
+        "size_bytes": 607,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/cli/__init__.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "located in 'tests' directory",
+      "summary": "Python test module initialization (role: test)",
+      "summary_text": "Python test module initialization (role: test)",
+      "metrics": {
+        "size_bytes": 595,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/cli/test_check.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 6392,
+        "loc": 157,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/cli/test_init.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 7153,
+        "loc": 159,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/cli/test_main.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 5206,
+        "loc": 125,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/config/__init__.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "located in 'tests' directory",
+      "summary": "Python test module initialization (role: test)",
+      "summary_text": "Python test module initialization (role: test)",
+      "metrics": {
+        "size_bytes": 598,
+        "loc": 1,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/config/test_loader.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 9904,
+        "loc": 241,
+        "todo_count": 0
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "path": "tests/config/test_schema.py",
+      "language": "Python",
+      "role": "test",
+      "role_justification": "filename starts with 'test_'",
+      "summary": "Python test file (role: test)",
+      "summary_text": "Python test file (role: test)",
+      "metrics": {
+        "size_bytes": 6679,
+        "loc": 159,
+        "todo_count": 0
+      }
+    }
+  ]
+}

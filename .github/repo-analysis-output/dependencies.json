@@ -1,10 +1,306 @@
 {
-  "nodes": [],
-  "edges": [],
+  "nodes": [
+    {
+      "id": "src/__init__.py",
+      "path": "src/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/cli/__init__.py",
+      "path": "src/cli/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/cli/commands/__init__.py",
+      "path": "src/cli/commands/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/cli/commands/check.py",
+      "path": "src/cli/commands/check.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "argparse",
+          "logging",
+          "pathlib.Path"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/cli/commands/init.py",
+      "path": "src/cli/commands/init.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "argparse",
+          "logging",
+          "pathlib.Path",
+          "sys",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/cli/main.py",
+      "path": "src/cli/main.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "argparse",
+          "logging",
+          "pathlib.Path",
+          "sys",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/config/__init__.py",
+      "path": "src/config/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "src/config/loader.py",
+      "path": "src/config/loader.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "logging",
+          "os",
+          "pathlib.Path",
+          "typing.Any",
+          "typing.Dict",
+          "typing.Optional"
+        ],
+        "third-party": [
+          "pydantic.ValidationError",
+          "yaml"
+        ]
+      }
+    },
+    {
+      "id": "src/config/schema.py",
+      "path": "src/config/schema.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "enum.Enum",
+          "typing.Dict",
+          "typing.List",
+          "typing.Optional"
+        ],
+        "third-party": [
+          "pydantic.BaseModel",
+          "pydantic.Field",
+          "pydantic.field_validator"
+        ]
+      }
+    },
+    {
+      "id": "tests/__init__.py",
+      "path": "tests/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/cli/__init__.py",
+      "path": "tests/cli/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/cli/test_check.py",
+      "path": "tests/cli/test_check.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "argparse.Namespace",
+          "pathlib.Path",
+          "unittest.mock.MagicMock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/cli/test_init.py",
+      "path": "tests/cli/test_init.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "argparse.Namespace",
+          "os",
+          "pathlib.Path",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/cli/test_main.py",
+      "path": "tests/cli/test_main.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "pathlib.Path",
+          "unittest.mock.MagicMock",
+          "unittest.mock.patch"
+        ],
+        "third-party": [
+          "pytest"
+        ]
+      }
+    },
+    {
+      "id": "tests/config/__init__.py",
+      "path": "tests/config/__init__.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": []
+      }
+    },
+    {
+      "id": "tests/config/test_loader.py",
+      "path": "tests/config/test_loader.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [
+          "os",
+          "pathlib.Path",
+          "tempfile"
+        ],
+        "third-party": [
+          "pydantic.ValidationError",
+          "pytest",
+          "yaml"
+        ]
+      }
+    },
+    {
+      "id": "tests/config/test_schema.py",
+      "path": "tests/config/test_schema.py",
+      "type": "file",
+      "external_dependencies": {
+        "stdlib": [],
+        "third-party": [
+          "pydantic.ValidationError",
+          "pytest"
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/cli/commands/check.py",
+      "target": "src/config/loader.py"
+    },
+    {
+      "source": "src/cli/commands/init.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "src/cli/main.py",
+      "target": "src/config/loader.py"
+    },
+    {
+      "source": "src/cli/main.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "src/cli/main.py",
+      "target": "src/cli/commands/check.py"
+    },
+    {
+      "source": "src/cli/main.py",
+      "target": "src/cli/commands/init.py"
+    },
+    {
+      "source": "tests/cli/test_check.py",
+      "target": "src/cli/commands/check.py"
+    },
+    {
+      "source": "tests/cli/test_init.py",
+      "target": "src/cli/commands/init.py"
+    },
+    {
+      "source": "tests/cli/test_init.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "tests/cli/test_main.py",
+      "target": "src/cli/main.py"
+    },
+    {
+      "source": "tests/config/test_loader.py",
+      "target": "src/config/loader.py"
+    },
+    {
+      "source": "tests/config/test_loader.py",
+      "target": "src/config/schema.py"
+    },
+    {
+      "source": "tests/config/test_schema.py",
+      "target": "src/config/schema.py"
+    }
+  ],
   "external_dependencies_summary": {
-    "stdlib": [],
-    "third-party": [],
-    "stdlib_count": 0,
-    "third-party_count": 0
+    "stdlib": [
+      "argparse",
+      "argparse.Namespace",
+      "enum.Enum",
+      "logging",
+      "os",
+      "pathlib.Path",
+      "sys",
+      "tempfile",
+      "typing.Any",
+      "typing.Dict",
+      "typing.List",
+      "typing.Optional",
+      "unittest.mock.MagicMock",
+      "unittest.mock.patch"
+    ],
+    "third-party": [
+      "pydantic.BaseModel",
+      "pydantic.Field",
+      "pydantic.ValidationError",
+      "pydantic.field_validator",
+      "pytest",
+      "yaml"
+    ],
+    "stdlib_count": 14,
+    "third-party_count": 6
   }
 }

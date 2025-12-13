@@ -63,6 +63,120 @@
       ]
     },
     {
+      "type": "directory",
+      "name": "src",
+      "children": [
+        {
+          "type": "directory",
+          "name": "cli",
+          "children": [
+            {
+              "type": "directory",
+              "name": "commands",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "__init__.py"
+                },
+                {
+                  "type": "file",
+                  "name": "check.py"
+                },
+                {
+                  "type": "file",
+                  "name": "init.py"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "main.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "config",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "loader.py"
+            },
+            {
+              "type": "file",
+              "name": "schema.py"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "name": "__init__.py"
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "tests",
+      "children": [
+        {
+          "type": "directory",
+          "name": "cli",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "test_check.py"
+            },
+            {
+              "type": "file",
+              "name": "test_init.py"
+            },
+            {
+              "type": "file",
+              "name": "test_main.py"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "config",
+          "children": [
+            {
+              "type": "file",
+              "name": "__init__.py"
+            },
+            {
+              "type": "file",
+              "name": "test_loader.py"
+            },
+            {
+              "type": "file",
+              "name": "test_schema.py"
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "name": "__init__.py"
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": ".gitignore"
+    },
+    {
       "type": "file",
       "name": "LICENSE"
     },
@@ -72,7 +186,15 @@
     },
     {
       "type": "file",
+      "name": "pyproject.toml"
+    },
+    {
+      "type": "file",
       "name": "README.md"
+    },
+    {
+      "type": "file",
+      "name": "repo-policy.yml"
     },
     {
       "type": "file",

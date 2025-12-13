@@ -13,7 +13,34 @@
     └── tree.md
   └── workflows
     └── af_maintenance.yml
+├── src
+  ├── cli
+    ├── commands
+      ├── __init__.py
+      ├── check.py
+      └── init.py
+    ├── __init__.py
+    └── main.py
+  ├── config
+    ├── __init__.py
+    ├── loader.py
+    └── schema.py
+  └── __init__.py
+├── tests
+  ├── cli
+    ├── __init__.py
+    ├── test_check.py
+    ├── test_init.py
+    └── test_main.py
+  ├── config
+    ├── __init__.py
+    ├── test_loader.py
+    └── test_schema.py
+  └── __init__.py
+├── .gitignore
 ├── LICENSE
 ├── LICENSE_HEADER.md
+├── pyproject.toml
 ├── README.md
+├── repo-policy.yml
 └── REPO_ANALYSIS.md
