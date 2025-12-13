@@ -12,7 +12,7 @@ policy-check:
     # - pip install "git+https://github.com/AgentFoundryExamples/license-header.git@main"
   
   script:
-    - repo-policy check --clean --keep-artifacts
+    - repo-policy --clean --keep-artifacts check
   
   artifacts:
     when: always

@@ -106,8 +106,8 @@ repo-policy --clean --keep-artifacts check
 
 ```bash
 # Enable detailed logging
-repo-policy --verbose check
 repo-policy -v check
+repo-policy --verbose check
 ```
 
 #### Advice Mode (Placeholder)
@@ -211,8 +211,8 @@ repo-policy --advice check
 Enable verbose output with detailed logging.
 
 ```bash
-repo-policy --verbose check
 repo-policy -v check
+repo-policy --verbose check
 ```
 
 ## Exit Codes
@@ -380,7 +380,7 @@ repo-policy --outdir /tmp/output check
 
 ```bash
 # Full cleanup and artifact retention
-repo-policy --clean --keep-artifacts --verbose check
+repo-policy -v --clean --keep-artifacts check
 
 # Check subdirectory with custom output
 repo-policy --path ./services/api --outdir ./output/api --clean check
@@ -493,7 +493,7 @@ repo-policy --outdir /tmp/policy-output check
 Enable verbose output to see detailed execution logs:
 
 ```bash
-repo-policy --verbose check
+repo-policy -v check
 ```
 
 ## See Also

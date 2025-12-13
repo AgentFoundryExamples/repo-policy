@@ -30,7 +30,7 @@ jobs:
       
       - name: Run policy check
         run: |
-          repo-policy check --clean --keep-artifacts
+          repo-policy --clean --keep-artifacts check
       
       - name: Upload policy reports
         if: always()

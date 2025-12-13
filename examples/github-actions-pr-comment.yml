@@ -33,7 +33,7 @@ jobs:
         id: policy
         continue-on-error: true
         run: |
-          repo-policy check --keep-artifacts
+          repo-policy --keep-artifacts check
           echo "exit_code=$?" >> $GITHUB_OUTPUT
       
       - name: Comment PR with report

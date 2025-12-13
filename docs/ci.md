@@ -82,7 +82,7 @@ jobs:
       
       - name: Run policy check
         run: |
-          repo-policy check --keep-artifacts
+          repo-policy --keep-artifacts check
       
       - name: Upload policy reports
         if: always()
@@ -129,7 +129,7 @@ jobs:
       
       - name: Run policy check
         run: |
-          repo-policy check --clean --keep-artifacts
+          repo-policy --clean --keep-artifacts check
       
       - name: Upload policy reports
         if: always()
@@ -177,7 +177,7 @@ jobs:
         id: policy
         continue-on-error: true
         run: |
-          repo-policy check --keep-artifacts
+          repo-policy --keep-artifacts check
           echo "exit_code=$?" >> $GITHUB_OUTPUT
       
       - name: Comment PR with report
@@ -265,7 +265,7 @@ jobs:
         run: |
           repo-policy --path ./services/${{ matrix.service }} \
                       --outdir ./.repo-policy-output/${{ matrix.service }} \
-                      check --clean --keep-artifacts
+                      --clean --keep-artifacts check
       
       - name: Upload reports for ${{ matrix.service }}
         if: always()
@@ -309,7 +309,7 @@ jobs:
       
       - name: Run policy check
         run: |
-          repo-policy check --clean --keep-artifacts
+          repo-policy --clean --keep-artifacts check
       
       - name: Upload audit reports
         if: always()
@@ -395,7 +395,7 @@ repos:
         
       - id: repo-policy-full
         name: Repository Policy Check (Full)
-        entry: bash -c 'repo-policy check --keep-artifacts || (cat .repo-policy-output/policy_report.md && exit 1)'
+        entry: bash -c 'repo-policy --keep-artifacts check || (cat .repo-policy-output/policy_report.md && exit 1)'
         language: system
         pass_filenames: false
         stages: [manual]
@@ -412,7 +412,7 @@ If not using pre-commit framework, create `.git/hooks/pre-commit`:
 echo "Running repository policy check..."
 
 # Run policy check
-if ! repo-policy check --clean; then
+if ! repo-policy --clean check; then
     echo ""
     echo "❌ Policy check failed!"
     echo "Review the report at: .repo-policy-output/policy_report.md"
@@ -486,7 +486,7 @@ pip install "git+https://github.com/AgentFoundryExamples/repo-summarizer-v1.git@
 pip install "git+https://github.com/AgentFoundryExamples/license-header.git@main"
 
 # Run policy check
-repo-policy check --clean --keep-artifacts
+repo-policy --clean --keep-artifacts check
 
 # Capture exit code
 EXIT_CODE=$?
@@ -512,7 +512,7 @@ policy-check:
     - pip install repo-policy
   
   script:
-    - repo-policy check --clean --keep-artifacts
+    - repo-policy --clean --keep-artifacts check
   
   artifacts:
     when: always
@@ -546,7 +546,7 @@ jobs:
       
       - run:
           name: Run policy check
-          command: repo-policy check --clean --keep-artifacts
+          command: repo-policy --clean --keep-artifacts check
       
       - store_artifacts:
           path: .repo-policy-output/
@@ -576,7 +576,7 @@ pipeline {
         
         stage('Policy Check') {
             steps {
-                sh 'repo-policy check --clean --keep-artifacts'
+                sh 'repo-policy --clean --keep-artifacts check'
             }
         }
     }
@@ -611,7 +611,7 @@ steps:
     displayName: 'Install repo-policy'
   
   - script: |
-      repo-policy check --clean --keep-artifacts
+      repo-policy --clean --keep-artifacts check
     displayName: 'Run policy check'
   
   - task: PublishBuildArtifacts@1
@@ -703,7 +703,7 @@ repo-policy generates the following artifacts:
 
 ```bash
 # Clean before run + keep artifacts for upload
-repo-policy check --clean --keep-artifacts
+repo-policy --clean --keep-artifacts check
 ```
 
 - `--clean`: Removes previous artifacts (ensures fresh run)
@@ -767,7 +767,7 @@ curl -X POST $SLACK_WEBHOOK_URL \
 Always use `--clean` to ensure reproducibility:
 
 ```bash
-repo-policy check --clean --keep-artifacts
+repo-policy --clean --keep-artifacts check
 ```
 
 ### 2. Full Checkout for Git Checks
@@ -824,7 +824,7 @@ When modifying `repo-policy.yml`, test locally first:
 
 ```bash
 # Test locally
-repo-policy check --verbose
+repo-policy -v check
 
 # Review changes
 git diff repo-policy.yml
@@ -877,13 +877,13 @@ rules:
 **Solution**:
 ```bash
 # Clean local artifacts
-repo-policy check --clean
+repo-policy --clean check
 
 # Use same Python version as CI
 python --version
 
 # Check configuration
-repo-policy --verbose check
+repo-policy -v check
 ```
 
 ### External Tools Not Found in CI
@@ -923,7 +923,7 @@ repo-policy --verbose check
 
 **Solution**: Use `--clean` and full git checkout
 ```bash
-repo-policy check --clean --keep-artifacts
+repo-policy --clean --keep-artifacts check
 ```
 
 ### Timeout in CI
