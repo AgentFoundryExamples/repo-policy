@@ -168,7 +168,7 @@ def check_command(args: argparse.Namespace) -> int:
         logger.info("Advice mode enabled (stub)")
         # Stub: advice logic would be implemented here
 
-    # Run policy checks (stub)
+    # Run policy checks with rules engine
     logger.info("Running policy checks")
     logger.debug(f"Rules to include: {config.rules.include}")
     logger.debug(f"Rules to exclude: {config.rules.exclude}")
@@ -188,24 +188,57 @@ def check_command(args: argparse.Namespace) -> int:
         "repo_tags": config.repo_tags,
     }
 
-    # Determine if there are errors
-    has_errors = False
+    # Initialize and run rules engine
+    from rules.engine import RuleEngine
+    from rules.docs import ReadmeRule
+    from rules.license import LicenseFileRule, SpdxIdRule, HeaderRule
+    from rules.hygiene import CiRule, GitignoreRule, ForbiddenFilesRule, FileSizeRule
+    from rules.tests import TestsVsSourcesRule
 
-    # Check if license headers failed
-    if (
-        context.license_header_result
-        and not context.license_header_result.skipped
-        and not context.license_header_result.success
-    ):
-        has_errors = True
-
+    engine = RuleEngine(config, context, target_path)
+    
+    # Register all rules
+    engine.register_rules([
+        # Documentation rules
+        ReadmeRule,
+        # License rules
+        LicenseFileRule,
+        SpdxIdRule,
+        HeaderRule,
+        # Hygiene rules
+        CiRule,
+        GitignoreRule,
+        ForbiddenFilesRule,
+        FileSizeRule,
+        # Test rules
+        TestsVsSourcesRule,
+    ])
+    
+    # Evaluate all rules
+    rule_results = engine.evaluate_all()
+    
+    # Store rule results in context
+    context.metadata["rule_results"] = rule_results.to_dict()
+    
     # Log final context
     logger.debug(f"Policy context: {context.to_dict()}")
 
-    # Report results
-    if has_errors:
+    # Report results summary
+    logger.info("=" * 60)
+    logger.info("POLICY CHECK SUMMARY")
+    logger.info("=" * 60)
+    logger.info(f"Total rules evaluated: {rule_results.total_rules}")
+    logger.info(f"  Passed: {rule_results.passed_rules}")
+    logger.info(f"  Failed: {rule_results.failed_rules}")
+    logger.info(f"    Errors: {rule_results.error_count}")
+    logger.info(f"    Warnings: {rule_results.warning_count}")
+    logger.info(f"  Skipped: {rule_results.skipped_rules}")
+    logger.info("=" * 60)
+    
+    # Determine exit code based on error-level failures
+    if rule_results.has_errors():
         logger.error("Policy check failed with error-level violations")
         return 1
     else:
-        logger.info("Policy check completed successfully")
+        logger.info("Policy check completed successfully (no error-level violations)")
         return 0

@@ -21,31 +21,52 @@ from argparse import Namespace
 from cli.commands.check import check_command
 
 
+def setup_test_repo_with_required_files(target_path):
+    """Create required files for test repos to satisfy basic rules."""
+    target_path.mkdir(exist_ok=True)
+    (target_path / "README.md").write_text("# Test\n\n## Installation\n\n## Usage\n\n## License\n")
+    (target_path / "LICENSE").write_text("Test License")
+    (target_path / ".gitignore").write_text("*.pyc\n")
+    workflows_dir = target_path / ".github" / "workflows"
+    workflows_dir.mkdir(parents=True, exist_ok=True)
+    (workflows_dir / "ci.yml").write_text("name: CI\non: [push]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: pytest\n")
+
+
+def setup_mock_config_with_rules(mock_config, target_path, outdir, **kwargs):
+    """Setup mock config with proper rules configuration."""
+    mock_config.target_path = str(target_path)
+    mock_config.outdir = str(outdir)
+    mock_config.clean = kwargs.get("clean", False)
+    mock_config.advice = kwargs.get("advice", False)
+    mock_config.keep_artifacts = kwargs.get("keep_artifacts", False)
+    mock_config.rules.include = ["*"]
+    mock_config.rules.exclude = []
+    mock_config.rules.severity_overrides = {}
+    mock_config.rules.readme_required_sections = ["Installation", "Usage", "License"]
+    mock_config.rules.tests_required_if_sources_present = False
+    mock_config.rules.large_file_threshold_mb = 10
+    mock_config.rules.forbidden_patterns = None
+    mock_config.globs.source = []
+    mock_config.globs.test = []
+    mock_config.license.spdx_id = kwargs.get("spdx_id", "Apache-2.0")
+    mock_config.license.require_header = kwargs.get("require_header", False)
+    mock_config.repo_tags = kwargs.get("repo_tags", {})
+    mock_config.integration.enable_repo_analyzer = kwargs.get("enable_repo_analyzer", True)
+    mock_config.integration.enable_license_headers = kwargs.get("enable_license_headers", True)
+
+
 @patch("cli.commands.check.LicenseHeaderChecker")
 @patch("cli.commands.check.RepoAnalyzerRunner")
 @patch("cli.commands.check.load_config")
 def test_check_command_success(mock_load_config, mock_analyzer, mock_checker, tmp_path):
     """Test successful check command execution."""
-    # Create target directory
+    # Create target directory with required files
     target_path = tmp_path / "repo"
-    target_path.mkdir()
+    setup_test_repo_with_required_files(target_path)
 
     # Mock config
     mock_config = MagicMock()
-    mock_config.target_path = str(target_path)
-    mock_config.outdir = str(tmp_path / "output")
-    mock_config.clean = False
-    mock_config.advice = False
-    mock_config.keep_artifacts = False
-    mock_config.rules.include = ["*"]
-    mock_config.rules.exclude = []
-    mock_config.rules.severity_overrides = {}
-    mock_config.license.spdx_id = "Apache-2.0"
-    mock_config.license.require_header = False
-    mock_config.repo_tags = {}
-    mock_config.integration.enable_repo_analyzer = True
-    mock_config.integration.enable_license_headers = True
-
+    setup_mock_config_with_rules(mock_config, target_path, tmp_path / "output")
     mock_load_config.return_value = mock_config
 
     # Mock analyzer and checker
@@ -57,7 +78,8 @@ def test_check_command_success(mock_load_config, mock_analyzer, mock_checker, tm
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -128,26 +150,13 @@ def test_check_command_config_load_error(mock_load_config):
 def test_check_command_with_clean(mock_load_config, mock_analyzer, mock_checker, tmp_path):
     """Test check command with clean option."""
     target_path = tmp_path / "repo"
-    target_path.mkdir()
+    setup_test_repo_with_required_files(target_path)
 
     outdir = tmp_path / "output"
     outdir.mkdir()
 
     mock_config = MagicMock()
-    mock_config.target_path = str(target_path)
-    mock_config.outdir = str(outdir)
-    mock_config.clean = True
-    mock_config.advice = False
-    mock_config.keep_artifacts = False
-    mock_config.rules.include = ["*"]
-    mock_config.rules.exclude = []
-    mock_config.rules.severity_overrides = {}
-    mock_config.license.spdx_id = None
-    mock_config.license.require_header = False
-    mock_config.repo_tags = {}
-    mock_config.integration.enable_repo_analyzer = True
-    mock_config.integration.enable_license_headers = True
-
+    setup_mock_config_with_rules(mock_config, target_path, outdir, clean=True)
     mock_load_config.return_value = mock_config
 
     # Mock analyzer and checker
@@ -159,7 +168,8 @@ def test_check_command_with_clean(mock_load_config, mock_analyzer, mock_checker,
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -183,23 +193,14 @@ def test_check_command_with_clean(mock_load_config, mock_analyzer, mock_checker,
 def test_check_command_with_advice(mock_load_config, mock_analyzer, mock_checker, tmp_path):
     """Test check command with advice option."""
     target_path = tmp_path / "repo"
-    target_path.mkdir()
+    setup_test_repo_with_required_files(target_path)
 
     mock_config = MagicMock()
-    mock_config.target_path = str(target_path)
-    mock_config.outdir = str(tmp_path / "output")
-    mock_config.clean = False
-    mock_config.advice = True
-    mock_config.keep_artifacts = False
-    mock_config.rules.include = ["*"]
-    mock_config.rules.exclude = []
-    mock_config.rules.severity_overrides = {}
-    mock_config.license.spdx_id = "MIT"
-    mock_config.license.require_header = True
-    mock_config.repo_tags = {"repo_type": "library"}
-    mock_config.integration.enable_repo_analyzer = True
-    mock_config.integration.enable_license_headers = True
-
+    setup_mock_config_with_rules(
+        mock_config, target_path, tmp_path / "output",
+        advice=True, spdx_id="MIT", require_header=True,
+        repo_tags={"repo_type": "library"}
+    )
     mock_load_config.return_value = mock_config
 
     # Mock analyzer and checker
@@ -211,7 +212,8 @@ def test_check_command_with_advice(mock_load_config, mock_analyzer, mock_checker
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None, summary={}
+        success=True, skipped=False, error_message=None, summary={},
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -263,7 +265,8 @@ def test_check_command_cli_args_passed(mock_load_config, mock_analyzer, mock_che
 
     mock_checker_instance = MagicMock()
     mock_checker_instance.check.return_value = MagicMock(
-        success=True, skipped=False, error_message=None
+        success=True, skipped=False, error_message=None,
+        compliant_files=[], non_compliant_files=[]
     )
     mock_checker.return_value = mock_checker_instance
 
@@ -296,23 +299,13 @@ def test_check_command_cli_args_passed(mock_load_config, mock_analyzer, mock_che
 def test_check_command_analyzer_failure(mock_load_config, mock_analyzer, mock_checker, tmp_path):
     """Test check command when repo analyzer fails."""
     target_path = tmp_path / "repo"
-    target_path.mkdir()
+    setup_test_repo_with_required_files(target_path)
 
     mock_config = MagicMock()
-    mock_config.target_path = str(target_path)
-    mock_config.outdir = str(tmp_path / "output")
-    mock_config.clean = False
-    mock_config.advice = False
-    mock_config.keep_artifacts = False
-    mock_config.rules.include = ["*"]
-    mock_config.rules.exclude = []
-    mock_config.rules.severity_overrides = {}
-    mock_config.license.spdx_id = "Apache-2.0"
-    mock_config.license.require_header = False
-    mock_config.repo_tags = {}
-    mock_config.integration.enable_repo_analyzer = True
-    mock_config.integration.enable_license_headers = False
-
+    setup_mock_config_with_rules(
+        mock_config, target_path, tmp_path / "output",
+        enable_license_headers=False
+    )
     mock_load_config.return_value = mock_config
 
     # Mock analyzer failure
