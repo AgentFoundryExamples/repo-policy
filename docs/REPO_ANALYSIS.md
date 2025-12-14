@@ -211,10 +211,10 @@ Run multiple checks concurrently with distinct output directories:
 
 ```bash
 # Terminal 1
-repo-policy --outdir /tmp/run1
+repo-policy --outdir /tmp/run1 check
 
 # Terminal 2
-repo-policy --outdir /tmp/run2
+repo-policy --outdir /tmp/run2 check
 ```
 
 Each run uses its own isolated output directory, preventing artifact collisions.

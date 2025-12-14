@@ -42,7 +42,14 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const report = fs.readFileSync('.repo-policy-output/policy_report.md', 'utf8');
+            const reportPath = '.repo-policy-output/policy_report.md';
+            let report;
+            
+            if (fs.existsSync(reportPath)) {
+              report = fs.readFileSync(reportPath, 'utf8');
+            } else {
+              report = '# 🚨 Policy Check Failed\n\nPolicy check did not produce a report. Please check the workflow logs for errors.';
+            }
             
             // Find existing comment
             const { data: comments } = await github.rest.issues.listComments({
@@ -53,7 +60,7 @@ jobs:
             
             const botComment = comments.find(comment => 
               comment.user.type === 'Bot' && 
-              comment.body.includes('# Policy Check Report')
+              comment.body.includes('# Policy Check')
             );
             
             const commentBody = `${report}\n\n---\n*Updated at ${new Date().toISOString()}*`;
@@ -84,7 +91,7 @@ jobs:
           path: .repo-policy-output/
       
       - name: Fail if policy check failed
-        if: steps.policy.outputs.exit_code != '0'
+        if: steps.policy.outcome == 'failure' || steps.policy.outputs.exit_code != '0'
         run: |
           echo "Policy check failed with exit code ${{ steps.policy.outputs.exit_code }}"
           exit 1
