@@ -16,9 +16,24 @@
   └── workflows
     └── af_maintenance.yml
 ├── docs
+  ├── ci.md
+  ├── config.md
   ├── LICENSE_HEADER.md
   ├── REPO_ANALYSIS.md
-  └── report-format.md
+  ├── report-format.md
+  └── usage.md
+├── examples
+  ├── .env.example
+  ├── circleci-config.yml
+  ├── github-actions-basic.yml
+  ├── github-actions-full.yml
+  ├── github-actions-pr-comment.yml
+  ├── gitlab-ci.yml
+  ├── pre-commit-config.yaml
+  ├── README.md
+  ├── repo-policy.baseline.yml
+  ├── repo-policy.standard.yml
+  └── repo-policy.strict.yml
 ├── src
   ├── cli
     ├── commands

@@ -76,6 +76,14 @@
       "children": [
         {
           "type": "file",
+          "name": "ci.md"
+        },
+        {
+          "type": "file",
+          "name": "config.md"
+        },
+        {
+          "type": "file",
           "name": "LICENSE_HEADER.md"
         },
         {
@@ -85,6 +93,60 @@
         {
           "type": "file",
           "name": "report-format.md"
+        },
+        {
+          "type": "file",
+          "name": "usage.md"
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "examples",
+      "children": [
+        {
+          "type": "file",
+          "name": ".env.example"
+        },
+        {
+          "type": "file",
+          "name": "circleci-config.yml"
+        },
+        {
+          "type": "file",
+          "name": "github-actions-basic.yml"
+        },
+        {
+          "type": "file",
+          "name": "github-actions-full.yml"
+        },
+        {
+          "type": "file",
+          "name": "github-actions-pr-comment.yml"
+        },
+        {
+          "type": "file",
+          "name": "gitlab-ci.yml"
+        },
+        {
+          "type": "file",
+          "name": "pre-commit-config.yaml"
+        },
+        {
+          "type": "file",
+          "name": "README.md"
+        },
+        {
+          "type": "file",
+          "name": "repo-policy.baseline.yml"
+        },
+        {
+          "type": "file",
+          "name": "repo-policy.standard.yml"
+        },
+        {
+          "type": "file",
+          "name": "repo-policy.strict.yml"
         }
       ]
     },
