@@ -1,0 +1,66 @@
+# Full GitHub Actions workflow with external tools
+# Place this file at: .github/workflows/policy-check.yml
+
+name: Repository Policy Check (Full)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  policy-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git-based checks
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'  # Cache pip packages
+      
+      - name: Install dependencies
+        run: |
+          pip install repo-policy
+          pip install "git+https://github.com/AgentFoundryExamples/repo-summarizer-v1.git@main"
+          pip install "git+https://github.com/AgentFoundryExamples/license-header.git@main"
+      
+      - name: Run policy check
+        run: |
+          repo-policy -v --clean --keep-artifacts check
+      
+      - name: Upload policy reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-reports-${{ github.sha }}
+          path: .repo-policy-output/
+          retention-days: 90
+      
+      - name: Display summary
+        if: always()
+        run: |
+          echo "## Policy Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f .repo-policy-output/policy_report.json ]; then
+            TOTAL=$(jq '.summary.total_rules' .repo-policy-output/policy_report.json)
+            PASSED=$(jq '.summary.passed_rules' .repo-policy-output/policy_report.json)
+            FAILED=$(jq '.summary.failed_rules' .repo-policy-output/policy_report.json)
+            ERRORS=$(jq '.summary.error_count' .repo-policy-output/policy_report.json)
+            WARNINGS=$(jq '.summary.warning_count' .repo-policy-output/policy_report.json)
+            
+            echo "- **Total Rules**: $TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- **Passed**: $PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "- **Failed**: $FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "- **Errors**: $ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Warnings**: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Policy report not generated" >> $GITHUB_STEP_SUMMARY
+          fi

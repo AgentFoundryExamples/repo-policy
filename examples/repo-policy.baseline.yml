@@ -1,0 +1,76 @@
+# repo-policy Baseline Configuration Example
+# Minimal requirements for basic repository hygiene
+# Recommended for: experimental projects, personal projects, early development
+
+target_path: .
+outdir: .repo-policy-output
+
+# Use baseline preset
+preset: baseline
+
+# License configuration (basic requirements)
+license:
+  spdx_id: MIT
+  header_template_path: LICENSE_HEADER.md
+  require_header: false  # Optional headers for baseline
+  include_globs:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+  exclude_globs:
+    - "**/test_*.py"
+    - "**/*_test.py"
+
+# File classification patterns
+globs:
+  source:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+  test:
+    - "**/test_*.py"
+    - "**/*.test.js"
+    - "**/*.spec.ts"
+
+# Rule configuration (lenient)
+rules:
+  include:
+    - "*"
+  exclude: []
+  
+  # Most rules as warnings for baseline
+  severity_overrides:
+    readme-required: warning
+    license-file-required: warning
+    license-spdx-id-required: warning
+    license-header-required: warning
+    ci-required: warning
+    gitignore-required: warning
+    forbidden-files: warning
+    file-size-limit: warning
+    tests-required-with-sources: warning
+  
+  # Lenient README requirements
+  readme_required_sections:
+    - Usage
+  
+  # Tests optional for baseline
+  tests_required_if_sources_present: false
+  
+  # Generous file size limit
+  large_file_threshold_mb: 50
+  
+  # Minimal forbidden patterns
+  forbidden_patterns:
+    - ".DS_Store"
+    - "Thumbs.db"
+
+# Integration (optional tools)
+integration:
+  enable_repo_analyzer: false
+  enable_license_headers: false
+
+# Repository metadata
+repo_tags:
+  repo_type: experiment
+  language: python

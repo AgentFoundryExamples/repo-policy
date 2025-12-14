@@ -81,7 +81,7 @@ In temp workspace mode, the repository is cloned to a temporary directory, analy
 Use `--keep-artifacts` to retain analyzer outputs after the policy check:
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ```
 
 This preserves the analyzer outputs in `.repo-policy-output/analyzer/` for inspection and troubleshooting.
@@ -91,7 +91,7 @@ This preserves the analyzer outputs in `.repo-policy-output/analyzer/` for inspe
 Use `--clean` to remove previous artifacts before running:
 
 ```bash
-repo-policy check --clean
+repo-policy --clean check
 ```
 
 This ensures a fresh analysis by removing all previous outputs from `outdir`.
@@ -190,7 +190,7 @@ repo-policy check
 ### With Artifact Retention
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ```
 
 ### With Temp Workspace (Maximum Isolation)
@@ -202,7 +202,7 @@ integration:
 ```
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ```
 
 ### Concurrent Runs
@@ -211,10 +211,10 @@ Run multiple checks concurrently with distinct output directories:
 
 ```bash
 # Terminal 1
-repo-policy check --outdir /tmp/run1
+repo-policy --outdir /tmp/run1 check
 
 # Terminal 2
-repo-policy check --outdir /tmp/run2
+repo-policy --outdir /tmp/run2 check
 ```
 
 Each run uses its own isolated output directory, preventing artifact collisions.
@@ -247,7 +247,7 @@ def evaluate_rule(context: PolicyContext):
 Enable verbose output for detailed analyzer logs:
 
 ```bash
-repo-policy check --verbose
+repo-policy -v check
 ```
 
 ### Inspect Outputs
@@ -255,7 +255,7 @@ repo-policy check --verbose
 Keep artifacts to inspect analyzer outputs:
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ls -la .repo-policy-output/analyzer/
 ```
 
@@ -269,6 +269,9 @@ repo-analyzer --path . --output /tmp/test-output
 
 ## See Also
 
-- [Configuration Schema](../README.md#configuration)
-- [License Header Integration](LICENSE_HEADER.md)
-- Main repo-policy documentation in README.md
+- [Usage Guide](usage.md) - CLI commands and options
+- [Configuration Guide](config.md) - Configuration schema and settings
+- [CI Integration Guide](ci.md) - Using repo-policy in CI/CD pipelines
+- [License Header Integration](LICENSE_HEADER.md) - License header checking integration
+- [Report Format](report-format.md) - Report structure and parsing
+- Main repo-policy documentation in [README.md](../README.md)

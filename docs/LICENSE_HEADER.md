@@ -93,7 +93,7 @@ license-header apply
 Use `--keep-artifacts` to retain license header check reports:
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ```
 
 This preserves the reports in `.repo-policy-output/license-headers/`:
@@ -110,7 +110,7 @@ This preserves the reports in `.repo-policy-output/license-headers/`:
 Use `--clean` to remove previous reports before running:
 
 ```bash
-repo-policy check --clean
+repo-policy --clean check
 ```
 
 ## Check Results
@@ -313,7 +313,7 @@ Summary: {'scanned': 100, 'compliant': 95, 'non_compliant': 5}
 ### With Report Artifacts
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 ```
 
 Generates:
@@ -362,7 +362,7 @@ jobs:
           pip install repo-policy
       
       - name: Run policy check
-        run: repo-policy check --keep-artifacts
+        run: repo-policy --keep-artifacts check
       
       - name: Upload reports
         if: always()
@@ -385,13 +385,13 @@ CI builds should fail on exit code 1, preventing merges with policy violations.
 ### Enable Debug Logging
 
 ```bash
-repo-policy check --verbose
+repo-policy -v check
 ```
 
 ### Inspect Reports
 
 ```bash
-repo-policy check --keep-artifacts
+repo-policy --keep-artifacts check
 cat .repo-policy-output/license-headers/license-header-check-report.json
 ```
 
@@ -417,6 +417,9 @@ license-header check --path . --header LICENSE_HEADER
 
 ## See Also
 
-- [Repository Analysis Integration](REPO_ANALYSIS.md)
-- [Configuration Schema](../README.md#configuration)
-- Main repo-policy documentation in README.md
+- [Usage Guide](usage.md) - CLI commands and options
+- [Configuration Guide](config.md) - Configuration schema and settings
+- [CI Integration Guide](ci.md) - Using repo-policy in CI/CD pipelines
+- [Repository Analysis Integration](REPO_ANALYSIS.md) - Repo analyzer integration details
+- [Report Format](report-format.md) - Report structure and parsing
+- Main repo-policy documentation in [README.md](../README.md)

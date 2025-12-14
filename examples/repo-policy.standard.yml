@@ -1,0 +1,100 @@
+# repo-policy Standard Configuration Example
+# Recommended settings for most projects
+# Recommended for: production applications, open source projects, team-maintained code
+
+target_path: .
+outdir: .repo-policy-output
+
+# Use standard preset
+preset: standard
+
+# License configuration
+license:
+  spdx_id: Apache-2.0
+  header_template_path: LICENSE_HEADER.md
+  require_header: true  # Enforce headers for standard
+  include_globs:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.java"
+    - "**/*.go"
+  exclude_globs:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/*.test.js"
+    - "**/*.spec.ts"
+    - "**/vendor/**"
+    - "**/node_modules/**"
+
+# File classification patterns
+globs:
+  source:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.java"
+    - "**/*.go"
+    - "**/*.rs"
+  test:
+    - "**/test_*.py"
+    - "**/*_test.py"
+    - "**/*.test.js"
+    - "**/*.test.ts"
+    - "**/*.spec.js"
+    - "**/*.spec.ts"
+    - "**/*Test.java"
+    - "**/*_test.go"
+
+# Rule configuration (balanced)
+rules:
+  include:
+    - "*"
+  exclude: []
+  
+  # Balanced severity for standard
+  severity_overrides:
+    readme-required: error
+    license-file-required: error
+    license-spdx-id-required: error
+    license-header-required: warning  # Warning to allow gradual adoption
+    ci-required: warning
+    gitignore-required: warning
+    forbidden-files: warning
+    file-size-limit: warning
+    tests-required-with-sources: error
+  
+  # Standard README requirements
+  readme_required_sections:
+    - Installation
+    - Usage
+    - License
+  
+  # Tests required
+  tests_required_if_sources_present: true
+  
+  # Reasonable file size limit
+  large_file_threshold_mb: 10
+  
+  # Standard forbidden patterns
+  forbidden_patterns:
+    - ".DS_Store"
+    - "Thumbs.db"
+    - "desktop.ini"
+    - "*.tmp"
+    - "*.swp"
+    - "*.swo"
+
+# Integration
+integration:
+  enable_repo_analyzer: true
+  repo_analyzer_binary: null
+  repo_analyzer_workspace_mode: direct_output
+  enable_license_headers: true
+  license_header_binary: null
+
+# Repository metadata
+repo_tags:
+  repo_type: application
+  language: python
+  team: engineering
